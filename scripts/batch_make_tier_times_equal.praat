@@ -25,8 +25,8 @@ form Equalize tier durations...
   boolean Verbose no
 endform
 
-include ../../plugin_tgutils/procedures/make_tier_times_equal.proc
-include ../../plugin_tgutils/procedures/check_directory.proc
+include ../procedures/make_tier_times_equal.proc
+include ../procedures/check_directory.proc
 
 @checkDirectory("Read TextGrids from...", read_from$)
 read_from$ = checkDirectory.name$

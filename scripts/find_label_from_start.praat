@@ -18,6 +18,6 @@ form Find label from start...
   integer  After 0
 endform
 
-include find_item_from.proc
+include ../procedures/find_label.proc
 
 @findFromStart(tier, target$, after)
