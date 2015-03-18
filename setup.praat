@@ -21,13 +21,12 @@
 # TODO: Add missing commands
 
 # Base menu
-Add menu command: "Objects", "Praat", "CPrAN",   "", 0, ""
-Add menu command: "Objects", "Praat", "Tgutils", "", 1, ""
+Add menu command: "Objects", "Praat", "tgutils", "CPrAN", 1, ""
 
 # Batch scripts menu
-Add menu command: "Objects", "Praat", "Move boundaries to zero crossings...",       "Tgutils", 2, "scripts/move_to_zero_crossings.praat"
-Add menu command: "Objects", "Praat", "Generate Pitch (two-pass)...",               "Tgutils", 2, "scripts/batch_to_pitch_two-pass.praat"
-Add menu command: "Objects", "Praat", "TextGrids to Audacity labels...",            "Tgutils", 2, "scripts/batch_textgrids_to_audacity_labels.praat"
+Add menu command: "Objects", "Praat", "Move boundaries to zero crossings...",       "tgutils", 2, "scripts/move_to_zero_crossings.praat"
+Add menu command: "Objects", "Praat", "Generate Pitch (two-pass)...",               "tgutils", 2, "scripts/batch_to_pitch_two-pass.praat"
+Add menu command: "Objects", "Praat", "TextGrids to Audacity labels...",            "tgutils", 2, "scripts/batch_textgrids_to_audacity_labels.praat"
 
 ## Dynamic commands
 
