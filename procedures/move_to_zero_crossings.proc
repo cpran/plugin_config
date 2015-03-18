@@ -26,7 +26,7 @@ procedure moveToZeroCrossings (.tier, .max_shift)
 
   selectObject: .sound, .textgrid
   @_moveToZero(.last_item)
-  
+
   selectObject: .sound, .textgrid
 endproc
 
@@ -66,7 +66,7 @@ procedure _moveToZero: .last
     .time_query$  = "Get time of point..."
     .delete_item$ = "Remove point..."
   endif
-  
+
   .max = 0
   for .item to .last
     selectObject: .textgrid
@@ -100,7 +100,7 @@ procedure _moveBoundary: .tier, .item, .zero
   Set interval text: .tier, .item,   .label$[1]
   Set interval text: .tier, .item+1, .label$[2]
 endproc
-        
+
 procedure _movePoint: .tier, .item, .zero
   .label$ = Get label of point: .tier, .item
 

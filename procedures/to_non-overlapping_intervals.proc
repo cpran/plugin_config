@@ -61,7 +61,7 @@ procedure toNonOverlappingIntervals ()
     .end = Get end point: 1, .interval
     .midpoint = (.end - .start) / 2 + .start
 
-    # Count how many speakers are speaking over that flattened interval  
+    # Count how many speakers are speaking over that flattened interval
     .speakers = 0
     for .tier to .tiers
       selectObject: .tg
