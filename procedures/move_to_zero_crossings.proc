@@ -1,8 +1,6 @@
 # Move TextGrid time marks to nearest zero-crossings (procedure)
 #
 # Author: Jose Joaquin Atria
-# Initial release: October 27, 2014
-# Last modified:   October 27, 2014
 #
 # This script is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -86,6 +84,8 @@ procedure _moveToZero: .last
       else
         @_movePoint: .tier, .item, .zero
       endif
+      .last_item = do("Get number of " + .item$ + "s...", .tier)
+
     endif
   endfor
 endproc
@@ -95,7 +95,7 @@ procedure _moveBoundary: .tier, .item, .zero
   .label$[2] = Get label of interval: .tier, .item+1
 
   Remove right boundary: .tier, .item
-  Insert boundary: .tier, .zero
+  nocheck Insert boundary: .tier, .zero
 
   Set interval text: .tier, .item,   .label$[1]
   Set interval text: .tier, .item+1, .label$[2]
@@ -105,5 +105,5 @@ procedure _movePoint: .tier, .item, .zero
   .label$ = Get label of point: .tier, .item
 
   Remove point: .tier, .item
-  Insert point: .tier, .zero, .label$
+  nocheck Insert point: .tier, .zero, .label$
 endproc
