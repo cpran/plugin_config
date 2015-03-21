@@ -9,6 +9,7 @@ This plugin defines a set of TextGrid utilities:
 * Count points in range
 * Find labels from beginning or end
 * Equalize tier durations
+* Explode TextGrid intervals
 * Move boundaries to zero-crossings
 * Find non-overlapping intervals
 * Save as Audacity labels
