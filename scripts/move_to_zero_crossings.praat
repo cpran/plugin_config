@@ -44,7 +44,7 @@ form.verbose = 0
 total_sounds    = numberOfSelected("Sound")
 total_textgrids = numberOfSelected("TextGrid")
 
-if !total_sounds or total_sounds and (total_sounds != total_textgrids)
+if !total_sounds or (total_sounds != total_textgrids)
   exitScript: "Please select an equal number of Sound and TextGrid objects."
 endif
 

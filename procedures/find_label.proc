@@ -12,6 +12,8 @@
 # A copy of the GNU General Public License is available at
 # <http://www.gnu.org/licenses/>.
 
+find_label.regex = 1
+
 procedure _findLabel (.tier, .target$, .from, .to)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
@@ -37,9 +39,16 @@ procedure _findLabel (.tier, .target$, .from, .to)
     .i = if .forward then .j else .total - (.j - 1) fi
 
     .label$ = do$("Get label of " + .type$ + "...", .tier, .i)
-    if .label$ = .target$
-      .return = .i
-      .j += .end
+    if find_label.regex
+      if index_regex(.label$, .target$)
+        .return = .i
+        .j += .end
+      endif
+    else 
+      if .label$ = .target$
+        .return = .i
+        .j += .end
+      endif
     endif
   endfor
 endproc

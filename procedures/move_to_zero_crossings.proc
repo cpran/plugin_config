@@ -11,10 +11,21 @@
 # <http://www.gnu.org/licenses/>.
 
 procedure moveToZeroCrossings (.tier, .max_shift)
-  .moved_items = 0
-
   .sound = selected("Sound")
   .textgrid = selected("TextGrid")
+
+  selectObject: .textgrid
+  .interval_tier = Is interval tier: .tier
+
+  if .interval_tier
+    .item$        = "interval"
+    .time_query$  = "Get end point..."
+    .delete_item$ = "Remove right boundary..."
+  else
+    .item$        = "point"
+    .time_query$  = "Get time of point..."
+    .delete_item$ = "Remove point..."
+  endif
 
   .items = do("Get number of " + .item$ + "s...", .tier)
   .last_item = if .interval_tier then .items-1 else .items fi
@@ -30,7 +41,7 @@ endproc
 
 procedure _checkShifts: .max, .last
   .sound = selected("Sound")
-  .textgrid = selected("Textrid")
+  .textgrid = selected("TextGrid")
   if .max
     for .item to .last
 
@@ -49,21 +60,16 @@ procedure _checkShifts: .max, .last
 endproc
 
 procedure _moveToZero: .last
+  .moved_items = 0
+
   .sound = selected("Sound")
-  .textgrid = selected("Textrid")
+  .textgrid = selected("TextGrid")
 
-  selectObject: .textgrid
-  .interval_tier = Is interval tier: .tier
-
-  if .interval_tier
-    .item$        = "interval"
-    .time_query$  = "Get end point..."
-    .delete_item$ = "Remove right boundary..."
-  else
-    .item$        = "point"
-    .time_query$  = "Get time of point..."
-    .delete_item$ = "Remove point..."
-  endif
+  .interval_tier = moveToZeroCrossings.interval_tier
+  .tier          = moveToZeroCrossings.tier
+  .item$         = moveToZeroCrossings.item$
+  .time_query$   = moveToZeroCrossings.time_query$
+  .delete_item$  = moveToZeroCrossings.delete_item$
 
   .max = 0
   for .item to .last
