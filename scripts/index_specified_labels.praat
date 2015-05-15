@@ -33,6 +33,8 @@ endif
 
 textgrid = selected("TextGrid")
 is_interval = Is interval tier: tier
+item$ = if is_interval then "interval" else "point" fi
+total_items = do("Get number of " + item$ + "s...", tier)
 
 table = Create Table with column names: "indexes", 0,
   ... "index label" + if is_interval then " start end" else " time" fi
@@ -68,6 +70,6 @@ repeat
       Set numeric value: this_row, "time",  time
     endif
   endif
-until !found
+until i >= total_items or !found
 
 selectObject: table
