@@ -35,6 +35,7 @@ procedure moveToZeroCrossings (.tier, .max_shift)
 
   selectObject: .sound, .textgrid
   @_moveToZero(.last_item)
+  .max = '_moveToZero.max'
 
   selectObject: .sound, .textgrid
 endproc
@@ -42,6 +43,10 @@ endproc
 procedure _checkShifts: .max, .last
   .sound = selected("Sound")
   .textgrid = selected("TextGrid")
+
+  .tier = moveToZeroCrossings.tier
+  .time_query$ = moveToZeroCrossings.time_query$
+
   if .max
     for .item to .last
 
