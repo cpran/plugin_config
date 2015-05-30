@@ -15,12 +15,17 @@ form Explode TextGrid...
   boolean Preserve_times 0
 endform
 
+sound = numberOfSelected("Sound")
+if sound
+  sound = selected("Sound")
+endif
+textgrid = selected("TextGrid")
+
+selectObject: textgrid
 interval = Is interval tier: tier
 if !interval
   exit Not an interval tier
 endif
-
-textgrid = selected("TextGrid")
 
 intervals = Get number of intervals: tier
 for i to intervals
@@ -29,11 +34,20 @@ for i to intervals
   end    = Get end point:         tier, i
   label$ = Get label of interval: tier, i
 
-  part[i] = Extract part: start, end, preserve_times
+  textgrid[i] = Extract part: start, end, preserve_times
   Rename: label$
+
+  if sound
+    selectObject: sound
+    sound[i] = Extract part: start, end, "rectangular", 1, preserve_times
+    Rename: label$
+  endif
 endfor
 
 nocheck selectObject: undefined
 for i to intervals
-  plusObject: part[i]
+  plusObject: textgrid[i]
+  if sound
+    plusObject: sound[i]
+  endif
 endfor

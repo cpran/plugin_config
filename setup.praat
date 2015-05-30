@@ -31,7 +31,9 @@ Add menu command: "Objects", "Praat", "TextGrids to Audacity labels...",        
 ## Dynamic commands
 
 # TextGrid commands
-Add action command: "TextGrid", 1, "",         0, "", 0, "Find label...",                        "Query -",               1, "scripts/find_label_in_textgrid.praat"
-Add action command: "TextGrid", 1, "",         0, "", 0, "Index specified labels...",            "Query -",               1, "scripts/index_specified_labels.praat"
-Add action command: "TextGrid", 0, "",         0, "", 0, "Save as Audacity label...",            "",                      0, "scripts/textgrid_to_audacity_label.praat"
-Add action command: "TextGrid", 1, "",         0, "", 0, "Count points in range...",             "Query point tier",      2, "scripts/count_points_in_range.praat"
+Add action command: "TextGrid", 1, "",      0, "", 0, "Find label...",             "Query -",          1, "scripts/find_label_in_textgrid.praat"
+Add action command: "TextGrid", 1, "",      0, "", 0, "Index specified labels...", "Query -",          1, "scripts/index_specified_labels.praat"
+Add action command: "TextGrid", 0, "",      0, "", 0, "Save as Audacity label...", "",                 0, "scripts/textgrid_to_audacity_label.praat"
+Add action command: "TextGrid", 1, "",      0, "", 0, "Count points in range...",  "Query point tier", 2, "scripts/count_points_in_range.praat"
+Add action command: "TextGrid", 1, "",      0, "", 0, "Explode TextGrid...",       "",                 0, "scripts/explode_textgrid.praat"
+Add action command: "TextGrid", 1, "Sound", 1, "", 0, "Explode TextGrid...",       "",                 0, "scripts/explode_textgrid.praat"
