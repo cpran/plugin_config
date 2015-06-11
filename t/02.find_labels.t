@@ -3,6 +3,7 @@ include ../procedures/find_label.proc
 
 @no_plan()
 
+tgutils$ = preferencesDirectory$ - "con" + "/plugin_tgutils/scripts/"
 synth = Create SpeechSynthesizer: "English", "default"
 To Sound: "This is some text", "yes"
 
@@ -75,6 +76,44 @@ second = findLabelAhead.return
 @findLabel: point_tier, "2"
 @ok: findLabel.return,
   ... "find point labels"
+
+# Scripts
+
+runScript: tgutils$ + "find_label_in_textgrid.praat",
+  ... segment_tier, "s", "Forwards", 1
+  
+runScript: tgutils$ + "find_label_in_textgrid.praat",
+  ... segment_tier, "s", "Backwards", 1
+
+runScript: tgutils$ + "find_label_in_textgrid.praat",
+  ... segment_tier, "x", "Forwards", 1
+  
+runScript: tgutils$ + "find_label_in_textgrid.praat",
+  ... segment_tier, "x", "Backwards", 1
+
+runScript: tgutils$ + "find_label_from_start.praat",
+  ... segment_tier, "s", 1
+  
+runScript: tgutils$ + "find_label_from_start.praat",
+  ... segment_tier, "s", 1
+
+runScript: tgutils$ + "find_label_from_start.praat",
+  ... segment_tier, "x", 1
+  
+runScript: tgutils$ + "find_label_from_start.praat",
+  ... segment_tier, "x", 1
+
+runScript: tgutils$ + "find_label_from_end.praat",
+  ... segment_tier, "s", 1
+  
+runScript: tgutils$ + "find_label_from_end.praat",
+  ... segment_tier, "s", 1
+
+runScript: tgutils$ + "find_label_from_end.praat",
+  ... segment_tier, "x", 1
+  
+runScript: tgutils$ + "find_label_from_end.praat",
+  ... segment_tier, "x", 1
 
 removeObject: sound, textgrid, synth
 
