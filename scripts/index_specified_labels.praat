@@ -36,15 +36,15 @@ is_interval = Is interval tier: tier
 item$ = if is_interval then "interval" else "point" fi
 total_items = do("Get number of " + item$ + "s...", tier)
 
-table = Create Table with column names: "indexes", 0,
+table = Create Table with column names: "indices", 0,
   ... "index label" + if is_interval then " start end" else " time" fi
 
 found = undefined
 i = 0
 repeat
   selectObject: textgrid
-  @findFromStart: tier, target$, i+1
-  found = findFromStart.return
+  @findLabelAhead: tier, target$, i+1
+  found = findLabelAhead.return
 
   if found
     i = found
