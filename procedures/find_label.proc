@@ -75,20 +75,20 @@ procedure findNthLabel (.tier, .target$, .index)
   .return = '_findLabel.return'
 endproc
 
-procedure findLabelAhead (.tier, .target$, .after)
+procedure findLabelAhead (.tier, .target$, .from)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
-  @_findLabel(.tier, .target$, .after, .total)
+  @_findLabel(.tier, .target$, .from, .total)
   .return = '_findLabel.return'
 endproc
 
-procedure findLabelBehind (.tier, .target$, .before)
+procedure findLabelBehind (.tier, .target$, .from)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
-  @_findLabel(.tier, .target$, .total - (.before - 1), 1)
+  @_findLabel(.tier, .target$, .total - (.from - 1), 1)
   .return = '_findLabel.return'
 endproc

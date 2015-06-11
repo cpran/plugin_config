@@ -15,9 +15,9 @@
 form Find label from start...
   integer  Tier 1
   sentence Target
-  integer  After 0
+  integer  Start_from 1
 endform
 
 include ../procedures/find_label.proc
 
-@findFromStart(tier, target$, after)
+@findLabelAhead(tier, target$, start_from)

@@ -32,11 +32,11 @@ endform
 include ../procedures/find_label.proc
 
 if direction$ = "Forwards"
-  @findFromStart(tier, target$, start_from)
-  writeInfoLine: findFromStart.return
+  @findLabelAhead(tier, target$, start_from)
+  writeInfoLine: findLabelAhead.return
 elsif direction$ = "Backwards"
-  @findFromEnd(tier, target$, start_from)
-  writeInfoLine: findFromEnd.return
+  @findLabelBehind(tier, target$, start_from)
+  writeInfoLine: findLabelBehind.return
 else
   exitScript: "Error. Please contact author."
 endif

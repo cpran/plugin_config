@@ -15,9 +15,10 @@
 form Find label from end...
   integer  Tier 1
   sentence Target
-  integer  Before 0
+  integer  Start_from 1
+  comment  Items are counted from end
 endform
 
-include find_item_from.proc
+include ../procedures/find_label.proc
 
-@findFromEnd(tier, target$, before)
+@findLabelBehind(tier, target$, start_from)
