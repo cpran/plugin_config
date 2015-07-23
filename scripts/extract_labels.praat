@@ -52,7 +52,7 @@ form Extract sounds...
   positive Tier 1
   integer Padding_(s) 0
   boolean Preserve_times 0
-  sentence Look_for
+  sentence Look_for .+
   boolean Use_regular_expressions 1
   optionmenu Replacements: 2
     option Make no replacements
@@ -120,6 +120,7 @@ hash = Create Table without column names: "hash", 1, 1
 
 @createEmptySelectionTable()
 extracted = createEmptySelectionTable.table
+selectObject: extracted
 Append column: "counter"
 Append column: "textgrid"
 
