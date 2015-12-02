@@ -21,3 +21,5 @@ endform
 include ../procedures/find_label.proc
 
 @findLabelAhead(tier, target$, start_from)
+
+writeInfoLine: findLabelAhead.return

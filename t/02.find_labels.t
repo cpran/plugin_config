@@ -28,7 +28,7 @@ endfor
 point_tier   = 5
 
 @findLabel: segment_tier, "s"
-@ok: findLabel.return,
+@ok: findLabel.return == 4,
   ... "finds existing label"
 
 @findLabel: segment_tier, "x"
@@ -36,7 +36,7 @@ point_tier   = 5
   ... "cannot find missing label"
 
 @findLabel: word_tier, "hi"
-@ok: findLabel.return,
+@ok: findLabel.return == 2,
   ... "label is regular expression"
 
 find_label.regex = 0
@@ -83,39 +83,39 @@ second = findLabelAhead.return
 
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "s", "Forwards", 1
-  
+
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "s", "Backwards", 1
 
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "x", "Forwards", 1
-  
+
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "x", "Backwards", 1
 
 runScript: tgutils$ + "find_label_from_start.praat",
   ... segment_tier, "s", 1
-  
+
 runScript: tgutils$ + "find_label_from_start.praat",
   ... segment_tier, "s", 1
 
 runScript: tgutils$ + "find_label_from_start.praat",
   ... segment_tier, "x", 1
-  
+
 runScript: tgutils$ + "find_label_from_start.praat",
   ... segment_tier, "x", 1
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "s", 1
-  
-runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "s", 1
+  ... segment_tier, "s", 1, "yes"
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "x", 1
-  
+  ... segment_tier, "s", 1, "yes"
+
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "x", 1
+  ... segment_tier, "x", 1, "yes"
+
+runScript: tgutils$ + "find_label_from_end.praat",
+  ... segment_tier, "x", 1, "yes"
 
 removeObject: sound, textgrid, synth
 

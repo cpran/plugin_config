@@ -44,7 +44,7 @@ procedure _findLabel (.tier, .target$, .from, .to)
         .return = .i
         .j += .end
       endif
-    else 
+    else
       if .label$ = .target$
         .return = .i
         .j += .end
@@ -85,10 +85,18 @@ procedure findLabelAhead (.tier, .target$, .from)
 endproc
 
 procedure findLabelBehind (.tier, .target$, .from)
+  if !variableExists("findLabelBehind.from_behind")
+    findLabelBehind.from_behind = 1
+  endif
+
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
-  @_findLabel(.tier, .target$, .total - (.from - 1), 1)
+  if findLabelBehind.from_behind
+    @_findLabel(.tier, .target$, .total - (.from - 1), 1)
+  else
+    @_findLabel(.tier, .target$, .from, 1)
+  endif
   .return = '_findLabel.return'
 endproc

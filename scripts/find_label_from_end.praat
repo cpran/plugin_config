@@ -16,9 +16,13 @@ form Find label from end...
   integer  Tier 1
   sentence Target
   integer  Start_from 1
-  comment  Items are counted from end
+  boolean Count_from_end 1
 endform
 
 include ../procedures/find_label.proc
 
+findLabelBehind.from_behind = count_from_end
+
 @findLabelBehind(tier, target$, start_from)
+
+writeInfoLine: findLabelBehind.return
