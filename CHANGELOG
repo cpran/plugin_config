@@ -1,0 +1,23 @@
+- v0.0.8:
+  - Added option to count from start for findLabelBehind
+  - Minor bug fixes
+  - Added this change log
+  - Improved license information
+- v0.0.7:
+  - Bug fixes
+  - Added missing command to setup.praat
+- v0.0.6:
+  - Added continuous integration
+  - Added label indexer
+- v0.0.5:
+  - Multiple bug fixes
+  - More sensible variable names
+  - Expanded tests
+- v0.0.4:
+  - Minor bug fixes
+- v0.0.3:
+  - Added missing script (bug fix)
+- v0.0.2:
+  - Added index_specified_labels.praat
+- v0.0.1:
+  - Initial release, inherited from JJATools
