@@ -8,16 +8,24 @@
 # The first version of this script was written for the
 # Laboratorio de Fonetica Letras UC
 #
-# Written by Jose J. Atria (18 November 2011)
-# Latest revision: April 4, 2014
+# This script is part of the tgutils CPrAN plugin for Praat.
+# The latest version is available through CPrAN or at
+# <http://cpran.net/plugins/tgutils>
 #
-# This script is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# The tgutils plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either
+# version 3 of the License, or (at your option) any later version.
 #
-# A copy of the GNU General Public License is available at
-# <http://www.gnu.org/licenses/>.
+# The tgutils plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with tgutils. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2011 - 2015 Jose Joaquin Atria
 
 form Find all labels...
   integer    Tier 1

@@ -9,17 +9,26 @@
 # order, pairing the first Sound object with the first TextGrid
 # object and so on. This should be fine for most cases.
 #
-# Written by Jose J. Atria (April 20, 2012)
-# Latest revision: 27 October 2014
 # Requires Praat v 5.3.44
 #
-# This script is free software: you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation, either version 3 of
-# the License, or (at your option) any later version.
+# This script is part of the tgutils CPrAN plugin for Praat.
+# The latest version is available through CPrAN or at
+# <http://cpran.net/plugins/tgutils>
 #
-# A copy of the GNU General Public License is available at
-# <http://www.gnu.org/licenses/>.
+# The tgutils plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either
+# version 3 of the License, or (at your option) any later version.
+#
+# The tgutils plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with tgutils. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2012 - 2015 Jose Joaquin Atria
 
 form Move boundaries to zero-crossings (batch)...
   sentence Sound_directory
