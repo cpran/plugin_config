@@ -1,3 +1,10 @@
+- v0.0.9:
+  - Changes to label searching interface: negative indeces search from end
+  - New script: get_tier_by_name.praat
+  - New procedure: get_tier_by_name.proc
+  - Added tests for new commands
+  - Other minor cosmetic changes
+  - Updated CI job files
 - v0.0.8:
   - Added option to count from start for findLabelBehind
   - Minor bug fixes
