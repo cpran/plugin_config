@@ -1,4 +1,4 @@
-# Find label in a TextGrid Interval tier.
+# Index all matching labels in a TextGrid tier
 #
 # The script runs through the intervals of an interval tier looking
 # for a literal label. If found, it prints the number of the interval
