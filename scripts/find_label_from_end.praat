@@ -23,12 +23,10 @@ form Find label from end...
   integer  Tier 1
   sentence Target
   integer  Start_from 1
-  boolean Count_from_end 1
+  comment  Negative "start from" values are counted from the end
 endform
 
 include ../procedures/find_label.proc
-
-findLabelBehind.from_behind = count_from_end
 
 @findLabelBehind(tier, target$, start_from)
 

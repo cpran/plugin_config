@@ -42,6 +42,8 @@ procedure _findLabel (.tier, .target$, .from, .to)
   endif
 
   .return = 0
+  .label$ = "--undefined--"
+  .index  =    undefined
   for .j from .start to .end
     .i = if .forward then .j else .total - (.j - 1) fi
 
@@ -49,11 +51,13 @@ procedure _findLabel (.tier, .target$, .from, .to)
     if find_label.regex
       if index_regex(.label$, .target$)
         .return = .i
+        .index  = .i
         .j += .end
       endif
     else
       if .label$ = .target$
         .return = .i
+        .index  = .i
         .j += .end
       endif
     endif
@@ -87,21 +91,25 @@ procedure findLabelAhead (.tier, .target$, .from)
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
-  @_findLabel(.tier, .target$, .from, .total)
+  if .from < 0
+    @_findLabel(.tier, .target$, .total - (abs(.from) - 1), .total)
+  else
+    @_findLabel(.tier, .target$, .from, .total)
+  endif
   .return = '_findLabel.return'
 endproc
 
 procedure findLabelBehind (.tier, .target$, .from)
-  if !variableExists("findLabelBehind.from_behind")
-    findLabelBehind.from_behind = 1
+  if variableExists("findLabelBehind.from_behind")
+    appendInfoLine: "Use of ""from_behind"" is deprecated. Use negative indexes instead"
   endif
 
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
-  if findLabelBehind.from_behind
-    @_findLabel(.tier, .target$, .total - (.from - 1), 1)
+  if .from < 0
+    @_findLabel(.tier, .target$, .total - (abs(.from) - 1), 1)
   else
     @_findLabel(.tier, .target$, .from, 1)
   endif

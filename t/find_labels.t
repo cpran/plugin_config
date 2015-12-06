@@ -48,12 +48,16 @@ find_label.regex = 0
 @ok: findLabelAhead.return,
   ... "find label from start"
 
-@findLabelBehind: segment_tier, "s", 1
-@ok: findLabelBehind.return,
-  ... "find label from end"
+@findLabelBehind: segment_tier, "s", 5
+@ok: findLabelBehind.return == 4,
+  ... "find label from end, counting forward"
+
+@findLabelBehind: segment_tier, "s", -1
+@ok: findLabelBehind.return == 16,
+  ... "find label from end, counting backwards"
 
 @ok_formula: "findLabelBehind.return != findLabelAhead.return",
-  ... "from start and end differ"
+  ... "from start and end differ in same direction"
 
 first = findLabelAhead.return
 
@@ -106,16 +110,16 @@ runScript: tgutils$ + "find_label_from_start.praat",
   ... segment_tier, "x", 1
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "s", 1, "yes"
+  ... segment_tier, "s", -1
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "s", 1, "yes"
+  ... segment_tier, "s", -1
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "x", 1, "yes"
+  ... segment_tier, "x", -1
 
 runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "x", 1, "yes"
+  ... segment_tier, "x", -1
 
 removeObject: sound, textgrid, synth
 
