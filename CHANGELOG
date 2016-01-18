@@ -1,3 +1,5 @@
+- v0.0.10: # unreleased
+  - findNthLabel returns undefined with an index of 0
 - v0.0.9:
   - Changes to label searching interface: negative indeces search from end
   - New script: get_tier_by_name.praat
