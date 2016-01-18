@@ -1,27 +1,35 @@
 # Setup script for tgutils
 #
-# Find the latest version of this plugin at
-# https://gitlab.com/cpran/plugin_tgutils
+# This script is part of the tgutils CPrAN plugin for Praat.
+# The latest version is available through CPrAN or at
+# <http://cpran.net/plugins/tgutils>
 #
-# Written by Jose Joaquín Atria
+# The tgutils plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either
+# version 3 of the License, or (at your option) any later version.
 #
-# This script is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# The tgutils plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
 #
-# A copy of the GNU General Public License is available at
-# <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with tgutils. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2014 - 2016 Jose Joaquin Atria
 
 ## Static commands:
 
-# TODO: Add missing commands
+if fileReadable(preferencesDirectory$ + "/plugin_vieweach")
+  # Base menu (only if the vieweach plugin is installed)
+  nocheck Add menu command: "Objects", "Praat", "tgutils", "CPrAN", 1, ""
 
-# Base menu
-nocheck Add menu command: "Objects", "Praat", "tgutils", "CPrAN", 1, ""
-
-# Batch scripts menu
-nocheck Add menu command: "Objects", "Praat", "TextGrids to Audacity labels...", "tgutils", 2, "scripts/batch_textgrids_to_audacity_labels.praat"
+  # Batch scripts menu (only if the vieweach plugin is installed)
+  nocheck Add menu command: "Objects", "Praat", "Make tier times equal (batch)...",             "tgutils", 2, "scripts/batch_make_tier_times_equal.praat"
+  nocheck Add menu command: "Objects", "Praat", "TextGrids to Audacity labels (batch)...",      "tgutils", 2, "scripts/batch_textgrids_to_audacity_labels.praat"
+  nocheck Add menu command: "Objects", "Praat", "Move boundaries to zero-crossings (batch)...", "tgutils", 2, "scripts/batch_move_to_zero_crossings.praat"
+endif
 
 ## Dynamic commands
 
