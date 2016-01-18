@@ -103,7 +103,7 @@ if external_replacements
   endif
 
   replacement_table = Create Table with column names: "replacements", 0, "replace with"
-  body$ readFile(replacement_file$')
+  body$ = readFile(replacement_file$')
 
   @split(newline$, body$)
   for i to split.length
