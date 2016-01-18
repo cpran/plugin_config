@@ -75,6 +75,10 @@ second = findLabelAhead.return
 @ok_formula: "findNthLabel.return = second",
   ... "2nd label is first after first"
 
+@findNthLabel: segment_tier, "s", 0
+@ok: findNthLabel.return == undefined,
+  ... "0th element is undefined"
+
 @findLabel: segment_tier, "ɪ"
 @ok: findLabel.return,
   ... "find unicode label"
