@@ -1,4 +1,4 @@
-# Convert TextGrid interval tier to Audacity label format
+# Convert TextGrid interval tier to Audacity label track
 #
 # Converts selected TextGrid objects to Audacity labels and
 # either saves them to external files or prints them  to the
@@ -23,38 +23,56 @@
 #
 # Copyright 2013 - 2015 Jose Joaquin Atria
 
+include ../../plugin_tgutils/procedures/textgrid_to_audacity_label.proc
 include ../../plugin_utils/procedures/check_directory.proc
+include ../../plugin_utils/procedures/check_filename.proc
 include ../../plugin_utils/procedures/require.proc
 @require("5.3.44")
 
-form TextGrid to Audacity label...
+form TextGrid tier to Audacity label track...
   integer Tier 1
   sentence Save_to
   comment Leave path empty for GUI selector
   boolean Print_to_Info no
 endform
 
-if !print_to_Info
-  @checkDirectory(save_to$, "Choose output directory...")
-  path$ = checkDirectory.name$
-endif
+info = print_to_Info
 
 total_textgrids = numberOfSelected("TextGrid")
+
+if !info
+  if total_textgrids > 1
+    @checkDirectory(save_to$, "Choose output directory...")
+    path$ = checkDirectory.name$
+  else
+    @checkFilename(save_to$, "Choose output file...")
+    path$ = checkFilename.name$
+  endif
+else
+  path$ = ""
+endif
+
 for i to total_textgrids
   tg[i] = selected("TextGrid", i)
 endfor
 
-if print_to_Info and total_textgrids
+if info and total_textgrids
   clearinfo
 endif
 
 for i to total_textgrids
-  selectObject(tg[i])
+  selectObject: tg[i]
   name$ = selected$("TextGrid")
-  intervals = Get number of intervals: tier
+  total_intervals = Get number of intervals: tier
 
-  if !print_to_Info
-    outfile$ = path$ + name$ + ".txt"
+  outfile$ = ""
+  if !info
+    if total_textgrids > 1
+      outfile$ = path$ + name$ + ".txt"
+    else
+      outfile$ = path$
+    endif
+
     if fileReadable(outfile$)
       appendInfoLine: "Overwriting existing file ", outfile$, "..."
       deleteFile(outfile$)
@@ -63,28 +81,17 @@ for i to total_textgrids
     appendInfoLine("-- Begin label for ", name$, " --")
   endif
 
-  for ii from 2 to intervals-1
-    start = Get start point: tier, ii
-    end = Get end point: tier, ii
-    label$ = Get label of interval: tier, ii
+  @tierToAudacityLabel: tier, outfile$
 
-    if !print_to_Info
-      appendFileLine(outfile$, start, tab$, end, tab$, label$)
-    else
-      appendInfoLine(start, tab$, end, tab$, label$)
-    endif
-
-  endfor
-
-  if total_textgrids > 1 and print_to_Info
+  if total_textgrids > 1 and info
     appendInfoLine("-- End label for ", name$, " --")
   endif
 endfor
 
 # Restore original selection
 if total_textgrids
-  selectObject(tg[1])
-  for i from 2 to total_textgrids
+  nocheck selectObject: undefined
+  for i to total_textgrids
     plusObject(tg[i])
   endfor
 endif
