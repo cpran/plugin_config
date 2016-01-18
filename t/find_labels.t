@@ -36,7 +36,7 @@ point_tier   = 5
   ... "cannot find missing label"
 
 @findLabel: word_tier, "hi"
-@ok: findLabel.return == 2,
+@ok: do$("Get label of interval...", word_tier, findLabel.return) == "This",
   ... "label is regular expression"
 
 find_label.regex = 0
