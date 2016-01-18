@@ -39,10 +39,10 @@ endform
 
 include ../procedures/find_label.proc
 
-if direction$ = "Forwards"
+if direction$ == "Forwards"
   @findLabelAhead(tier, target$, start_from)
   writeInfoLine: findLabelAhead.return
-elsif direction$ = "Backwards"
+elsif direction$ == "Backwards"
   @findLabelBehind(tier, target$, start_from)
   writeInfoLine: findLabelBehind.return
 else
