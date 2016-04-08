@@ -1,0 +1,161 @@
+# Read data from a configuration file
+#
+# This script is part of the config CPrAN plugin for Praat.
+# The latest version is available through CPrAN or at
+# <http://cpran.net/plugins/config>
+#
+# The config plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either
+# version 3 of the License, or (at your option) any later version.
+#
+# The config plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with selection. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2015 Jose Joaquin Atria
+
+if !variableExists("config.separator$")
+  config.separator$ = ":"
+endif
+
+if !variableExists("config.use_table")
+  if praatVersion < 6016
+    config.use_table = 1
+  else
+    config.use_table = 0
+  endif
+endif
+
+#! ~~~ params
+#! in:
+#!   .filename$: >
+#!     The filename of the configuration file
+#!   config.separator$: >
+#!     The string separating the config keys from their values
+#!   config.use_table: >
+#!     Force the use of tables instead of hashes for Praat 6.0.16+
+#! out:
+#!   .length: >
+#!     The number of config entries found
+#!   .keys$[]: >
+#!     A list of config keys found
+#!   .return$[]: >
+#!     A string hash with the found entries. This hash is only created
+#!     in 6.0.16+
+#!   .return[]: >
+#!     A numeric hash with the found entries. Items in this hash are as
+#!     returned by calling `number()` on each corresponding element in
+#!     `.return$[]`. This hash is only created in 6.0.16+
+#!   .table: >
+#!     The ID of a Table representation of the config hash, as a fallback
+#!     for Praat versions before 6.0.16, or for use when requested by the
+#!     user with `.use_table`. When not created, it has the value 0.
+#! selection:
+#!   out: >
+#!     When `.use_table` is true, a single Table object. Otherwise it
+#!     remains unchanged.
+#! ~~~
+#!
+#! Read a hash from a configuration file. Entries are read by separating
+#! each meaningful line at the leftmost occurrence of `.separator$`. The
+#! part on the left will be the key, and what is left on the right will
+#! be its value.
+#!
+#! The separator string can be longer than a single character. This
+#! separator is not passed as an argument, but read from the global
+#! workspace. If it does not exist by the time the procedures are included,
+#! it is given the default value of ":".
+#!
+#! Lines beginning with a hash character (#), optionally preceeded by
+#! whitespace, are considered comments, and ignored.
+#!
+#! For versions after 6.0.16, elements found are stored in the `.return$[]`
+#! string hash. For convenience, a separate `.return[]` hash is provided
+#! with the result of calling `number()` on each corresponding element in
+#! `.return$[]`. For the purposes of generating this numeric hash,
+#! corresponding strings like "yes" and "true" are converted to `1`, while
+#! "no" and "false" are converted to `0`.
+#!
+#! In versions before 6.0.16, which do not support hashes, or when requested
+#! by setting `.use_table` to true, a Table representation of a hash is used
+#! _instead_, with a single row, and in which each column is named with the
+#! key of a different entry. Because this approach means there will be a
+#! single hash, boolean strings are not supported when using Tables.
+#!
+procedure config: .filename$
+  .n = numberOfSelected()
+  for .i to .n
+    .id[.i] = selected(.i)
+  endfor
+
+  if .use_table
+    .table = Create Table with column names: "config_hash", 1, .separator$
+  else
+    .table = 0
+  endif
+
+  .config = Read Strings from raw text file: .filename$
+  .lines = Get number of strings
+
+  .length = 0
+  for .i to .lines
+    selectObject: .config
+
+    .line$ = Get string: .i
+
+    .sep = index(.line$, .separator$)
+    if !.sep or index_regex(.line$, "^\s*#")
+      Remove string: .i
+      .lines -= 1
+      .i -= 1
+    else
+      .key$ = left$(.line$, .sep - 1)
+      .key$ = replace_regex$(.key$, "^\s*", "", 1)
+      .key$ = replace_regex$(.key$, "\s*$", "", 1)
+
+      .val$ = right$(.line$, length(.line$) - (.sep + length(.separator$)))
+      .val$ = replace_regex$(.val$, "^\s*", "", 1)
+      .val$ = replace_regex$(.val$, "\s*$", "", 1)
+
+      .val = number(.val$)
+
+      .val = if index_regex(.val$, "(true|yes)") then 1 else .val fi
+      .val = if index_regex(.val$, "(false|no)") then 0 else .val fi
+
+      if .use_table
+        selectObject: .table
+        if !do("Get column index...", .key$)   ; key is not known
+          Append column: .key$
+          .length += 1
+        endif
+        Set string value: 1, .key$, .val$
+      else
+        if !variableExists(".return$[""" + .key$ + """]")   ; key is not known
+          .length += 1
+        endif
+        .return$[.key$] = .val$
+        .return[ .key$] = .val
+      endif
+
+      .keys$[.length] = .key$
+    endif
+  endfor
+
+  removeObject: .config
+
+  if .use_table
+    selectObject: .table
+    Remove column: .separator$
+  else
+    nocheck selectObject: undefined
+    for .i to .n
+      plusObject: .id[.i]
+    endfor
+  endif
+
+endproc

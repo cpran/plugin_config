@@ -1,0 +1,49 @@
+variables:
+  CPRAN_GIT: https://gitlab.com/cpran/plugin_
+
+before_script:
+  - pushd ..
+  - rm -rf plugin_{testsimple}
+  - git clone ${CPRAN_GIT}testsimple.git
+  - popd
+
+Praat 5.4:
+  script:
+    - prove -v --exec "praat-5.4.00"
+  tags:
+    - cpran
+  allow_failure: true
+
+Praat 5.4.22:
+  script:
+    - prove -v --exec "praat-5.4.22 --ansi --pref-dir=../.."
+  tags:
+    - cpran
+  allow_failure: true
+
+Praat 6.0.03:
+  script:
+    - prove -v --exec "praat-6.0.03 --ansi --pref-dir=../.. --run"
+  tags:
+    - cpran
+  allow_failure: true
+
+Praat 6.0.14:
+  script:
+    - prove -v --exec "praat-6.0.14 --ansi --pref-dir=../.. --run"
+  tags:
+    - cpran
+  allow_failure: true
+
+Praat 6.0.15:
+  script:
+    - prove -v --exec "praat-6.0.15 --ansi --pref-dir=../.. --run"
+  tags:
+    - cpran
+  allow_failure: true
+
+Praat 6.0.16:
+  script:
+    - prove -v --exec "praat-6.0.16 --ansi --pref-dir=../.. --run"
+  tags:
+    - cpran

@@ -1,0 +1,16 @@
+---
+Plugin: config
+Homepage: http://cpran.net/plugins/config
+Version: 0.0.1
+Maintainer: José Joaquín Atria <jjatria@gmail.com>
+Depends:
+  praat: 5.4.00+
+  Plugins: ~
+Recommends:
+  praat: 6.0.16+
+License: GPL3
+Readme: readme.md
+Description:
+  Short: Read a config file
+  Long: >
+    Standard procedures to read data from a configuration file.
