@@ -3,7 +3,7 @@ variables:
 
 before_script:
   - pushd ..
-  - rm -rf plugin_{testsimple}
+  - rm -rf plugin_testsimple
   - git clone ${CPRAN_GIT}testsimple.git
   - popd
 
