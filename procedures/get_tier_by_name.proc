@@ -17,6 +17,8 @@
 #
 # Copyright 2015-2016 Jose Joaquin Atria
 
+
+
 #! ~~~ params
 #! in:
 #!   .target$: >
@@ -64,7 +66,7 @@ procedure getTierByName_regex: .pattern$
   .return = 0
   for .i to .n
     .name$ = Get tier name: .i
-    if index_regex(.name$, .target$)
+    if index_regex(.name$, .pattern$)
       .return = .i
       .i += .n
     endif
