@@ -41,11 +41,11 @@ endform
 
 textgrid = Copy: selected$("TextGrid") + "_merged"
 
-if !tier
+if tier
+  @mergeContiguousLabels: tier
+else
   total_tiers = Get number of tiers
   for i to total_tiers
     @mergeContiguousLabels: i
   endfor
-else
-  @mergeContiguousLabels: tier
 endif
