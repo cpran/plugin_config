@@ -1,7 +1,7 @@
 include ../../plugin_tap/procedures/simple.proc
 include ../procedures/move_to_zero_crossings.proc
 
-@no_plan()
+@plan: 5
 
 synth = Create SpeechSynthesizer: "English", "default"
 To Sound: "This is some text", "yes"

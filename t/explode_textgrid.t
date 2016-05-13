@@ -1,7 +1,7 @@
 include ../../plugin_tap/procedures/simple.proc
 include ../procedures/find_label.proc
 
-@no_plan()
+@plan: 3
 
 synth = Create SpeechSynthesizer: "English", "default"
 To Sound: "This is some text", "yes"

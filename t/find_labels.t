@@ -1,9 +1,7 @@
 include ../../plugin_tap/procedures/more.proc
 include ../procedures/find_label.proc
 
-preferencesDirectory$ = replace_regex$(preferencesDirectory$, "(con)?(\.(EXE|exe))?$", "", 0)
-
-@no_plan()
+@plan: 35
 
 tgutils$ = preferencesDirectory$ + "/plugin_tgutils/scripts/"
 synth = Create SpeechSynthesizer: "English", "default"
