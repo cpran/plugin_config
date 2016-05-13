@@ -1,13 +1,3 @@
-# Find label in a TextGrid Interval tier.
-#
-# The script runs through the intervals of an interval tier looking
-# for a literal label. If found, it prints the number of the interval
-# that holds it. Using the value in the "index" variable it's possible
-# to look for the interval number with the nth repetition of the label.
-#
-# The first version of this script was written for the
-# Laboratorio de Fonetica Letras UC
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -25,8 +15,37 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2011 - 2015 Jose Joaquin Atria
+# Copyright 2011-2016 Jose Joaquin Atria
 
+include ../procedures/find_label.proc
+
+#! ~~~ params
+#! in:
+#!   Tier: >
+#!     (integer) The tier in which to perform the search
+#!   Target: >
+#!     (sentence) The target string to match
+#!   Direction:>
+#!     (optionmenu) The direction in which to perform the search. Can be
+#!     "Forwards", to look for labels coming _after_ the starting point, or
+#!     "Backwards", to look for labels appearing _before_.
+#!   Start from: >
+#!     (integer) The starting index of the search. Negative indeces are
+#!     counted from the end
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#! Find label in a TextGrid Interval tier.
+#!
+#! The script runs through the intervals of an interval tier looking
+#! for a literal label. If found, it prints the number of the interval
+#! that holds it. Using the value in the "index" variable it's possible
+#! to look for the interval number with the nth repetition of the label.
+#!
+#! The first version of this script was written for the
+#! Laboratorio de Fonetica Letras UC
+#!
 form Find label...
   integer    Tier 1
   sentence   Target
@@ -36,8 +55,6 @@ form Find label...
   integer    Start_from 1
   comment    When searching backwards, starting point is counted from end
 endform
-
-include ../procedures/find_label.proc
 
 if direction$ == "Forwards"
   @findLabelAhead(tier, target$, start_from)

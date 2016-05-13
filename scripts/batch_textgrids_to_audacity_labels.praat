@@ -1,10 +1,3 @@
-# Convert TextGrid interval tier to Audacity label format
-# Written by Jose Joaquin Atria (1 July 2013)
-#
-# Converts all TextGrid objects in the specified directory
-# to Audacity labels and either saves them to external files
-# or prints them to the Info window.
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -22,12 +15,27 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2013-2016 Jose Joaquin Atria
 
 include ../../plugin_utils/procedures/check_directory.proc
 include ../../plugin_utils/procedures/require.proc
 @require("5.3.44")
 
+#! ~~~params
+#! in:
+#!   TextGrid_directory: >
+#!     (word) The directory with TextGrid files to process
+#!   Tier: >
+#!     (integer) The tier to convert
+#!   Print_to_Info: >
+#!     (boolean) If true, the labels will be printed to the Info window
+#!     (or STDOUT). Otherwise, they'll be saved to the same directory.
+#! ~~~
+#!
+#! Converts all TextGrid objects in the specified directory
+#! to Audacity labels and either saves them to external files
+#! or prints them to the Info window.
+#!
 form TextGrids in directory to Audacity labels...
   comment Leave blank for GUI selector
   word TextGrid_directory

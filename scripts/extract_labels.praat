@@ -1,38 +1,3 @@
-# Extract non-empty intervals from a specific tier
-#
-# The script will process Sound and TextGrid pairs in sequential
-# order, pairing the first Sound object with the first TextGrid
-# object and so on. This should be fine for most cases.
-#
-# If a value is specified in the "Look for" field, the script will
-# only extract the sounds from intervals labeled with that string.
-# If the field is empty, all non-empty intervals will be extracted.
-#
-# For each object pair, the script looks for the intervals on the
-# specified tier and extracts them into new Sound objects. These
-# objects will be renamed as 'TGNAME'_'LABEL'_'COUNTER'
-# where TGNAME is the name of the TextGrid object, LABEL the label
-# on the interval and COUNTER a number counting the occurences of
-# that label so far. Thus, if there are two intervals labeled "a"
-# on the specified tier, these will result in objects named
-# 'TGNAME'_a1 and 'TGNAME'_a2 respectively.
-#
-# Since not all characters common in interval labels are acceptable
-# as object names, the script makes it easy to perform systematized
-# replacements on these to prevent loss of important information.
-#
-# These replacements can be added by inserting replace$() or
-# replace_regex$() function calls in the area of the script labeled
-# as "Add ad-hoc character replacements". Alternatively, the user
-# can select a csv file to be read as a list of replacements. The
-# file must be in the form
-#
-# REPLACE,REPLACEMENT
-#
-# and only lines with one comma will be read.
-#
-# Requires Praat v 5.3.63
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -50,13 +15,67 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2012 - 2015 Jose Joaquin Atria
+# Copyright 2012-2016 Jose Joaquin Atria
 
 include ../../plugin_utils/procedures/utils.proc
 include ../../plugin_utils/procedures/require.proc
 include ../../plugin_selection/procedures/selection.proc
 @require("5.3.63")
 
+#! ~~~ params
+#! in:
+#!   Tier: >
+#!     (positive)
+#!   Padding: >
+#!     (integer)
+#!   Preserve times: >
+#!     (boolean)
+#!   Look for: >
+#!     (sentence)
+#!   Use regular expressions: >
+#!     (boolean)
+#!   Replacements: >
+#!     (optionmenu)
+#! selection:
+#!   in:
+#!     sound: 0-
+#!     longsound: 0-
+#!     textgrid: 1-
+#! ~~~
+#!
+#! Extract non-empty intervals from a specific tier
+#!
+#! The script will process Sound and TextGrid pairs in sequential
+#! order, pairing the first Sound object with the first TextGrid
+#! object and so on. This should be fine for most cases.
+#!
+#! If a value is specified in the "Look for" field, the script will
+#! only extract the sounds from intervals labeled with that string.
+#! If the field is empty, all non-empty intervals will be extracted.
+#!
+#! For each object pair, the script looks for the intervals on the
+#! specified tier and extracts them into new Sound objects. These
+#! objects will be renamed as 'TGNAME'_'LABEL'_'COUNTER'
+#! where TGNAME is the name of the TextGrid object, LABEL the label
+#! on the interval and COUNTER a number counting the occurences of
+#! that label so far. Thus, if there are two intervals labeled "a"
+#! on the specified tier, these will result in objects named
+#! 'TGNAME'_a1 and 'TGNAME'_a2 respectively.
+#!
+#! Since not all characters common in interval labels are acceptable
+#! as object names, the script makes it easy to perform systematized
+#! replacements on these to prevent loss of important information.
+#!
+#! These replacements can be added by inserting replace$() or
+#! replace_regex$() function calls in the area of the script labeled
+#! as "Add ad-hoc character replacements". Alternatively, the user
+#! can select a csv file to be read as a list of replacements. The
+#! file must be in the form
+#!
+#! REPLACE,REPLACEMENT
+#!
+#! and only lines with one comma will be read.
+#!
 form Extract sounds...
   positive Tier 1
   integer Padding_(s) 0

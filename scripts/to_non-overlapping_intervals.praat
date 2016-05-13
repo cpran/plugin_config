@@ -1,17 +1,3 @@
-# Detect non-overlapping intervals in a multi-tiered TextGrid
-#
-# This script will generate a new TextGrid object with a single tier
-# containing intervals obtained by "flattening" those of all tiers in the
-# original TextGrid.
-#
-# Depending on the label of those intervals, it will be possible to determine
-# whether they were silent in the original (no label), whether they have an
-# overlap across tiers ("0" as the label), or whether they are a non-overlapping
-# interval, in which case the number of the tier to which they correspond will
-# be the label.
-#
-# Based on https://uk.groups.yahoo.com/neo/groups/praat-users/conversations/messages/6947
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -29,9 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
 include ../procedures/to_non-overlapping_intervals.proc
+
+#! ~~~ params
+#! selection:
+#!   in:
+#!     textgrid: 1
+#!   out:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Detect non-overlapping intervals in a multi-tiered TextGrid.
+#!
+#! Calls `@toNonOverlappingIntervals` internally. Read a more complete
+#! description of this command there.
 
 textgrids = numberOfSelected("TextGrid")
 for i to textgrids

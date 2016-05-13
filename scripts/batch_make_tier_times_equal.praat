@@ -1,12 +1,3 @@
-# Equalise TextGrid tier durations (batch)
-#
-# Praat allows for tiers of different durations to be merged
-# into a single annotation file. However, this is contrary to
-# the expectations of most scripts in existence. Since it is
-# also hard to check whether a given TextGrid will suffer from
-# this, this script extends all tiers of insufficient length
-# until they reach the duration of the longest.
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -24,17 +15,32 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
+include ../../plugin_utils/procedures/utils.proc
+include ../../plugin_utils/procedures/check_directory.proc
+
+#! ~~~ params
+#!   Read from: >
+#!     (sentence) Input path
+#!   Save to: >
+#!     (sentence) Output path
+#! ~~~
+#!
+#! Processes all TextGrid objects in the specified input path, and
+#! makes them all have the same duration (that of the longest in the
+#! TextGrid).
+#!
+#! Modified objects are saved in the output directory.
+#!
+#! Read the documentation of the `Make tier times equal...` command
+#! for a more complete description.
+#!
 form Equalize tier durations...
   sentence Read_from
   sentence Save_to
   comment Leave paths empty for GUI selector
 endform
-
-include ../../plugin_utils/procedures/utils.proc
-include ../../plugin_utils/procedures/check_directory.proc
-include ../procedures/make_tier_times_equal.proc
 
 if !fileReadable(preferencesDirectory$ + "/plugin_vieweach")
   exitScript: "This script requires the vieweach plugin to run"
@@ -60,6 +66,7 @@ writeFileLine:  tmp$, ""
 appendFileLine: tmp$,
   ... "runScript: preferencesDirectory$ + ""/plugin_tgutils/scripts/" +
   ...   "make_tier_times_equal.praat"""
+
 # Since this is a batch script, save and remove the generated
 # objects as soon as the execution for each original TextGrid
 # is complete

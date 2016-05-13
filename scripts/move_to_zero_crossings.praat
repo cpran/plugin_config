@@ -1,16 +1,3 @@
-# Move all boundaries from a TextGrid to their nearest
-# zero-crossings, keeping labels and number of intervals.
-#
-# The script can also move points in point tiers to
-# zero-crossings, if so desired, by changing the value of the
-# move_points variable.
-#
-# The script will process Sound and TextGrid pairs in sequential
-# order, pairing the first Sound object with the first TextGrid
-# object and so on. This should be fine for most cases.
-#
-# Requires Praat v 5.3.44
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -28,11 +15,36 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2012 - 2015 Jose Joaquin Atria
+# Copyright 2012-2016 Jose Joaquin Atria
 
 include ../../plugin_selection/procedures/selection.proc
 include ../../plugin_tgutils/procedures/move_to_zero_crossings.proc
+include ../../plugin_utils/procedures/require.proc
+@require: "5.3.44"
 
+#! ~~~ params
+#! in:
+#!   Tier: >
+#!     (integer) Tier to process in each file (`0` means "process all")
+#!   Maximum_shift: >
+#!     (integer) The maximum allowed time shift (`0` means "no maximum")
+#!   Ignore_points: >
+#!     (boolean) If true, point tiers will be ignored
+#! ~~~
+#!
+#! Move all boundaries from a TextGrid to their nearest
+#! zero-crossings, keeping labels and number of intervals.
+#!
+#! The script can also move points in point tiers to
+#! zero-crossings, if so desired, by changing the value of the
+#! move_points variable.
+#!
+#! The script will process Sound and TextGrid pairs in sequential
+#! order, pairing the first Sound object with the first TextGrid
+#! object and so on. This should be fine for most cases.
+#!
+#! Objects are modified inline.
+#!
 form Move boundaries to zero-crossings...
   integer Tier 0 (= all)
   integer Maximum_shift_(s) 0 (= no maximum)

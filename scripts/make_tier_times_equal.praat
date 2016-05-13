@@ -1,11 +1,3 @@
-# Equalise TextGrid tier durations
-#
-# Praat allows for tiers of different durations to be merged into a single
-# annotation file. However, this is contrary to the expectations of most
-# scripts in existence. Since it is also hard to check whether a given TextGrid
-# will suffer from this, this script extends all tiers of insufficient length
-# until they reach the duration of the longest.
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -23,9 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
 include ../procedures/make_tier_times_equal.proc
+
+#! ~~~ params
+#!  selection:
+#!    in:
+#!      textgrid: 1-
+#!    out:
+#!      textgrid: 1-
+#! ~~~
+#!
+#! Equalise TextGrid tier durations
+#!
+#! Praat allows for tiers of different durations to be merged into a single
+#! annotation file. However, this is contrary to the expectations of most
+#! scripts in existence. Since it is also hard to check whether a given
+#! TextGrid will suffer from this, this script extends all tiers of
+#! insufficient length until they reach the duration of the longest.
 
 textgrids = numberOfSelected("TextGrid")
 

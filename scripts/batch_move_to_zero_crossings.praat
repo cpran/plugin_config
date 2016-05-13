@@ -1,16 +1,3 @@
-# Move all boundaries from a TextGrid to their nearest
-# zero-crossings, keeping labels and number of intervals.
-#
-# The script can also move points in point tiers to
-# zero-crossings, if so desired, by changing the value of the
-# move_points variable.
-#
-# The script will process Sound and TextGrid pairs in sequential
-# order, pairing the first Sound object with the first TextGrid
-# object and so on. This should be fine for most cases.
-#
-# Requires Praat v 5.3.44
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -30,6 +17,31 @@
 #
 # Copyright 2012 - 2015 Jose Joaquin Atria
 
+include ../../plugin_utils/procedures/require.proc
+include ../../plugin_utils/procedures/check_directory.proc
+
+#! ~~~ params
+#! in:
+#!   Sound_directory: >
+#!     (sentence) Path of directory with sound files
+#!   TextGrid_directory: >
+#!     (sentence) Path of directory with TextGrid files
+#!   Output_directory: >
+#!     (sentence) Path of directory where modified TextGrids will be saved
+#!   Tier: >
+#!     (integer) Tier to process in each file (`0` means "process all")
+#!   Maximum_shift: >
+#!     (integer) The maximum allowed time shift (`0` means "no maximum")
+#!   Ignore_points: >
+#!     (boolean) If true, point tiers will be ignored
+#! ~~~
+#!
+#! Move the boundaries in all TextGrid files in a directory to the
+#! nearest zero-crossing in an accompanying sound file.
+#!
+#! See the documentation of the `Move to zero-crossings...` command to
+#! read a more detailed description.
+#!
 form Move boundaries to zero-crossings (batch)...
   sentence Sound_directory
   sentence TextGrid_directory

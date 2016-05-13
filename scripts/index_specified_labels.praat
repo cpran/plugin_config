@@ -1,13 +1,3 @@
-# Index all matching labels in a TextGrid tier
-#
-# The script runs through the intervals of an interval tier looking
-# for a literal label. If found, it prints the number of the interval
-# that holds it. Using the value in the "index" variable it's possible
-# to look for the interval number with the nth repetition of the label.
-#
-# The first version of this script was written for the
-# Laboratorio de Fonetica Letras UC
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -25,15 +15,42 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2011 - 2015 Jose Joaquin Atria
+# Copyright 2011-2016 Jose Joaquin Atria
 
+include ../procedures/find_label.proc
+
+#! ~~~ params
+#! in:
+#!   Tier: >
+#!     (integer) The tier where to look for labels
+#!   Target: >
+#!     (sentence) The target string to perform the search
+#!   Regular expression: >
+#!     (boolean) If true, the target string will be interpreted as a
+#!     regular expression pattern. Otherwise, it will be treated like
+#!     a string literal
+#! selection:
+#!   in:
+#!     textgrid: 1
+#!   out:
+#!     table: 1
+#! ~~~
+#!
+#! Index all matching labels in a TextGrid tier
+#!
+#! The script runs through the intervals of an interval tier looking
+#! for a literal label. If found, it prints the number of the interval
+#! that holds it. Using the value in the "index" variable it's possible
+#! to look for the interval number with the nth repetition of the label.
+#!
+#! The first version of this script was written for the
+#! Laboratorio de Fonetica Letras UC
+#!
 form Find all labels...
   integer    Tier 1
   sentence   Target .*
   boolean    Regular_expression 1
 endform
-
-include ../procedures/find_label.proc
 
 if !regular_expression
   find_label.regex = 0
