@@ -70,7 +70,6 @@ procedure _findLabel (.tier, .target$, .from, .to)
   endif
 
   .return = 0
-  .label$ = string$(undefined)
   for .j from .start to .end
     .i = if .forward then .j else .total - (.j - 1) fi
 
@@ -87,6 +86,10 @@ procedure _findLabel (.tier, .target$, .from, .to)
       endif
     endif
   endfor
+
+  if !.return
+    .label$ = string$(undefined)
+  endif
 endproc
 
 #! ~~~ params
