@@ -127,4 +127,6 @@ runScript: tgutils$ + "find_label_from_end.praat",
 
 removeObject: sound, textgrid, synth
 
+@ok_selection()
+
 @done_testing()

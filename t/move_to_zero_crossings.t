@@ -40,6 +40,8 @@ selectObject: sound, textgrid
 
 removeObject: sound, textgrid, synth
 
+@ok_selection()
+
 @done_testing()
 
 procedure check_crossings: .tier

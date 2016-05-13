@@ -97,4 +97,6 @@ runScript: tgutils$ + "get_tier_by_name.praat", "音声学"
 
 removeObject: sound, textgrid, synth
 
+@ok_selection()
+
 @done_testing()

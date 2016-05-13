@@ -29,4 +29,6 @@ endfor
 
 removeObject: sound, textgrid, synth
 
+@ok_selection()
+
 @done_testing()
