@@ -70,8 +70,7 @@ procedure _findLabel (.tier, .target$, .from, .to)
   endif
 
   .return = 0
-  .label$ = "--undefined--"
-  .index  =    undefined
+  .label$ = string$(undefined)
   for .j from .start to .end
     .i = if .forward then .j else .total - (.j - 1) fi
 
@@ -79,13 +78,11 @@ procedure _findLabel (.tier, .target$, .from, .to)
     if find_label.regex
       if index_regex(.label$, .target$)
         .return = .i
-        .index  = .i
         .j += .end
       endif
     else
       if .label$ = .target$
         .return = .i
-        .index  = .i
         .j += .end
       endif
     endif
@@ -119,7 +116,8 @@ procedure findLabel (.tier, .target$)
   .total = do("Get number of " + .type$ + "s...", .tier)
 
   @_findLabel(.tier, .target$, 1, .total)
-  .return = '_findLabel.return'
+  .return =  '_findLabel.return'
+  .label$ = "'_findLabel.label$'"
 endproc
 
 #! ~~~ params
@@ -154,13 +152,15 @@ procedure findNthLabel (.tier, .target$, .index)
   .type$ = if .interval then "interval" else "point" fi
   .total = do("Get number of " + .type$ + "s...", .tier)
 
+  .label$ = string$(undefined)
   if .index
     .from = 1
     for .i to .index
       @_findLabel(.tier, .target$, .from, .total)
       .from = '_findLabel.return' + 1
     endfor
-    .return = '_findLabel.return'
+    .return =  '_findLabel.return'
+    .label$ = "'_findLabel.label$'"
   else
     .return = undefined
   endif
@@ -201,7 +201,8 @@ procedure findLabelAhead (.tier, .target$, .from)
   else
     @_findLabel(.tier, .target$, .from, .total)
   endif
-  .return = '_findLabel.return'
+  .return =  '_findLabel.return'
+  .label$ = "'_findLabel.label$'"
 endproc
 
 #! ~~~ params
@@ -243,5 +244,6 @@ procedure findLabelBehind (.tier, .target$, .from)
   else
     @_findLabel(.tier, .target$, .from, 1)
   endif
-  .return = '_findLabel.return'
+  .return =  '_findLabel.return'
+  .label$ = "'_findLabel.label$'"
 endproc
