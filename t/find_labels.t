@@ -28,102 +28,156 @@ endfor
 point_tier   = 5
 
 @findLabel: segment_tier, "s"
-@ok: findLabel.return == 4,
-  ... "finds existing label"
+@is: findLabel.return, 4,
+  ... "finds existing label index"
+@is$: findLabel.label$, "s",
+  ... "finds existing label string"
 
 @findLabel: segment_tier, "x"
-@ok: !findLabel.return,
+@is: findLabel.return, 0,
   ... "cannot find missing label"
+@is$: findLabel.label$, string$(undefined),
+  ... "missing label string is undefined"
 
 @findLabel: word_tier, "hi"
-@ok: do$("Get label of interval...", word_tier, findLabel.return) == "This",
+@is$: do$("Get label of interval...", word_tier, findLabel.return), "This",
   ... "label is regular expression"
+@is$: findLabel.label$, "This",
+  ... "returned label string with regex"
 
 find_label.regex = 0
 @findLabel: word_tier, "hi"
-@ok: !findLabel.return,
+@is: findLabel.return, 0,
   ... "label is not regular expression"
 
 @findLabelAhead: segment_tier, "s", 1
-@ok: findLabelAhead.return,
-  ... "find label from start"
+@isnt: findLabelAhead.return, 0,
+  ... "find label index from start"
+@is$: findLabelAhead.label$, "s",
+  ... "find label string from start"
 
 @findLabelBehind: segment_tier, "s", 5
-@ok: findLabelBehind.return == 4,
-  ... "find label from end, counting forward"
+@is: findLabelBehind.return, 4,
+  ... "find label index from end, counting forward"
+@is$: findLabelBehind.label$, "s",
+  ... "find label string from end, counting forward"
 
 @findLabelBehind: segment_tier, "s", -1
-@ok: findLabelBehind.return == 16,
+@is: findLabelBehind.return, 16,
   ... "find label from end, counting backwards"
+@is$: findLabelBehind.label$, "s",
+  ... "find label string from end, counting backwards"
 
-@ok_formula: "findLabelBehind.return != findLabelAhead.return",
+@isnt: findLabelBehind.return, findLabelAhead.return,
   ... "from start and end differ in same direction"
 
 first = findLabelAhead.return
 
 @findLabelAhead: segment_tier, "s", first + 1
-@ok: findLabelAhead.return,
+@isnt: findLabelAhead.return, 0,
   ... "finds ahead after offset"
-@ok_formula: "findLabelAhead.return > first",
+@cmp_ok: findLabelAhead.return, ">", first,
   ... "finds next after first"
 
 second = findLabelAhead.return
 
 @findNthLabel: segment_tier, "s", 2
-@ok: findNthLabel.return,
+@isnt: findNthLabel.return, 0,
   ... "finds nth label"
-@ok_formula: "findNthLabel.return = second",
+@is: findNthLabel.return, second,
   ... "2nd label is first after first"
 
 @findNthLabel: segment_tier, "s", 0
-@ok: findNthLabel.return == undefined,
+@is: findNthLabel.return, undefined,
   ... "0th element is undefined"
 
 @findLabel: segment_tier, "ɪ"
-@ok: findLabel.return,
+@isnt: findLabel.return, 0,
   ... "find unicode label"
 
 @findLabel: point_tier, "2"
-@ok: findLabel.return,
+@isnt: findLabel.return, 0,
   ... "find point labels"
 
 # Scripts
 
-runScript: tgutils$ + "find_label_in_textgrid.praat",
+appendInfo: "# "
+nocheck runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "s", "Forwards", 1
+@is: number(info$()), 4,
+  ... "script finds label forward"
 
+appendInfo: "# "
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "s", "Backwards", 1
+@is: number(info$()), 0,
+  ... "script doesn't find label from start, counting backwards"
 
+appendInfo: "# "
+runScript: tgutils$ + "find_label_in_textgrid.praat",
+  ... segment_tier, "s", "Backwards", -1
+@is: number(info$()), 16,
+  ... "script finds label from end, counting backwards"
+
+appendInfo: "# "
 runScript: tgutils$ + "find_label_in_textgrid.praat",
   ... segment_tier, "x", "Forwards", 1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label from start, counting forward"
 
+appendInfo: "# "
 runScript: tgutils$ + "find_label_in_textgrid.praat",
-  ... segment_tier, "x", "Backwards", 1
+  ... segment_tier, "x", "Backwards", -1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label from end, counting backwards"
 
-runScript: tgutils$ + "find_label_from_start.praat",
+appendInfo: "# "
+runScript: tgutils$ + "find_label_ahead.praat",
   ... segment_tier, "s", 1
+@is: number(info$()), 4,
+  ... "script finds label ahead from start"
 
-runScript: tgutils$ + "find_label_from_start.praat",
+appendInfo: "# "
+runScript: tgutils$ + "find_label_ahead.praat",
+  ... segment_tier, "s", -1
+@is: number(info$()), 0,
+  ... "script finds label ahead from end"
+
+appendInfo: "# "
+runScript: tgutils$ + "find_label_ahead.praat",
+  ... segment_tier, "x", 1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label ahead from start"
+
+appendInfo: "# "
+runScript: tgutils$ + "find_label_ahead.praat",
+  ... segment_tier, "x", -1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label ahead from end"
+
+appendInfo: "# "
+runScript: tgutils$ + "find_label_behind.praat",
   ... segment_tier, "s", 1
+@is: number(info$()), 0,
+  ... "script doesn't find label behind from start"
 
-runScript: tgutils$ + "find_label_from_start.praat",
-  ... segment_tier, "x", 1
-
-runScript: tgutils$ + "find_label_from_start.praat",
-  ... segment_tier, "x", 1
-
-runScript: tgutils$ + "find_label_from_end.praat",
+appendInfo: "# "
+runScript: tgutils$ + "find_label_behind.praat",
   ... segment_tier, "s", -1
+@is: number(info$()), 16,
+  ... "script finds label behind from end"
 
-runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "s", -1
+appendInfo: "# "
+runScript: tgutils$ + "find_label_behind.praat",
+  ... segment_tier, "x", 1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label behind from start"
 
-runScript: tgutils$ + "find_label_from_end.praat",
+appendInfo: "# "
+runScript: tgutils$ + "find_label_behind.praat",
   ... segment_tier, "x", -1
-
-runScript: tgutils$ + "find_label_from_end.praat",
-  ... segment_tier, "x", -1
+@is: number(info$()), 0,
+  ... "script doesn't find missing label behind from end"
 
 removeObject: sound, textgrid, synth
 

@@ -61,38 +61,50 @@ Set tier name: 5, "points"
 
 # Scripts
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "clause"
-@ok: number(info$()) == 2,
+@is: number(info$()), 2,
   ... "script finds existing interval tier"
 
+appendInfo: "# "
+runScript: tgutils$ + "get_tier_by_name_regex.praat", "a?[pl]ause$"
+@is: number(info$()), 2,
+  ... "script finds tier using regular expression"
+
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "points"
-@ok: number(info$()) == 5,
+@is: number(info$()), 5,
   ... "script finds existing point tier"
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "fake"
-@ok: number(info$()) == 0,
+@is: number(info$()), 0,
   ... "script does not find missing tier"
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", ""
-@ok: number(info$()) == 0,
+@is: number(info$()), 0,
   ... "script does not find tier with empty string"
 
 Set tier name: 5, "añejó"
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "añejó"
-@ok: number(info$()) ==  5,
+@is: number(info$()),  5,
   ... "script finds tier with unicode string"
 
 Set tier name: 5, "あいうえお"
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "あいうえお"
-@ok: number(info$()) ==  5,
+@is: number(info$()),  5,
   ... "script finds tier with hiragana string"
 
 Set tier name: 5, "音声学"
 
+appendInfo: "# "
 runScript: tgutils$ + "get_tier_by_name.praat", "音声学"
-@ok: number(info$()) ==  5,
+@is: number(info$()), 5,
   ... "script finds tier with kanji string"
 
 removeObject: sound, textgrid, synth
