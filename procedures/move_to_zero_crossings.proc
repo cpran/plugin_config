@@ -17,8 +17,29 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
+#! ~~~ params
+#! out:
+#!  .tier: The index of the tier to convert
+#!  .out$: >
+#!    A variable specifying where to send the output of the conversion. If it
+#!    is the empty string, output will be printed to the Info window.
+#!    Otherwise, the string is interpreted as a filename, and output is
+#!    printed there directly.
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Converts a specific TextGrid tier to Audacity labels. Audacity labels are
+#! represented within Audacity as a single track, which fulfills a similar
+#! role to the tiers in a TextGrid. This is why only a single tier can be
+#! converted at any one time.
+#!
+#! To convert an entire TextGrid with multiple tiers, the procedure needs
+#! to be run independently for each.
+#!
 procedure moveToZeroCrossings (.tier, .max_shift)
   .sound = selected("Sound")
   .textgrid = selected("TextGrid")
@@ -40,16 +61,30 @@ procedure moveToZeroCrossings (.tier, .max_shift)
   .last_item = if .interval_tier then .items-1 else .items fi
 
   selectObject: .sound, .textgrid
-  @_checkShifts(.max_shift, .last_item)
+  @tgutils._checkShifts(.max_shift, .last_item)
 
   selectObject: .sound, .textgrid
-  @_moveToZero(.last_item)
-  .max = '_moveToZero.max'
+  @tgutils._moveToZero(.last_item)
+  .max = tgutils._moveToZero.max
 
   selectObject: .sound, .textgrid
 endproc
 
-procedure _checkShifts: .max, .last
+#! ~~~ params
+#! out:
+#!  .max: >
+#!    If non-zero, the maximum time shift to apply per mark. Otherwise it
+#!    is ignored.
+#!  .last: >
+#!    The index of the last item to check
+#! selection:
+#!   in:
+#!     sound: 1
+#!     textgrid: 1
+#! internal: true
+#! ~~~
+#!
+procedure tgutils._checkShifts: .max, .last
   .sound = selected("Sound")
   .textgrid = selected("TextGrid")
 
@@ -71,9 +106,21 @@ procedure _checkShifts: .max, .last
       endif
     endfor
   endif
+
+  selectObject: .sound, .textgrid
 endproc
 
-procedure _moveToZero: .last
+#! ~~~ params
+#! in:
+#!  .last: >
+#!    The index of the last item to check
+#! selection:
+#!   in:
+#!     sound: 1
+#! internal: true
+#! ~~~
+#!
+procedure tgutils._moveToZero: .last
   .moved_items = 0
 
   .sound = selected("Sound")
@@ -100,9 +147,9 @@ procedure _moveToZero: .last
 
       selectObject: .textgrid
       if .interval_tier
-        @_moveBoundary: .tier, .item, .zero
+        @tgutils._moveBoundary: .tier, .item, .zero
       else
-        @_movePoint: .tier, .item, .zero
+        @tgutils._movePoint: .tier, .item, .zero
       endif
       .last_item = do("Get number of " + .item$ + "s...", .tier)
 
@@ -110,7 +157,21 @@ procedure _moveToZero: .last
   endfor
 endproc
 
-procedure _moveBoundary: .tier, .item, .zero
+#! ~~~ params
+#! in:
+#!  .tier: >
+#!    The index of the tier to modify
+#!  .item: >
+#!    The index of the interval to modify
+#!  .zero: >
+#!    The time of the zero crossing to move the interval boundary to
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! internal: true
+#! ~~~
+#!
+procedure tgutils._moveBoundary: .tier, .item, .zero
   .label$[1] = Get label of interval: .tier, .item
   .label$[2] = Get label of interval: .tier, .item+1
 
@@ -121,7 +182,21 @@ procedure _moveBoundary: .tier, .item, .zero
   Set interval text: .tier, .item+1, .label$[2]
 endproc
 
-procedure _movePoint: .tier, .item, .zero
+#! ~~~ params
+#! in:
+#!  .tier: >
+#!    The index of the tier to modify
+#!  .item: >
+#!    The index of the point to move
+#!  .zero: >
+#!    The time of the zero crossing to move the point to
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! internal: true
+#! ~~~
+#!
+procedure tgutils._movePoint: .tier, .item, .zero
   .label$ = Get label of point: .tier, .item
 
   Remove point: .tier, .item

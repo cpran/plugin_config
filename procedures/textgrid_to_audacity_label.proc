@@ -1,5 +1,3 @@
-# TextGrid tier to Audacity label track
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -17,8 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2013, 2015 Jose Joaquin Atria
+# Copyright 2013, 2015-2016 Jose Joaquin Atria
 
+#! ~~~ params
+#! out:
+#!  .tier: The index of the tier to convert
+#!  .out$: >
+#!    A variable specifying where to send the output of the conversion. If it
+#!    is the empty string, output will be printed to the Info window.
+#!    Otherwise, the string is interpreted as a filename, and output is
+#!    printed there directly.
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Converts a specific TextGrid tier to Audacity labels. Audacity labels are
+#! represented within Audacity as a single track, which fulfills a similar
+#! role to the tiers in a TextGrid. This is why only a single tier can be
+#! converted at any one time.
+#!
+#! To convert an entire TextGrid with multiple tiers, the procedure needs
+#! to be run independently for each.
+#!
 procedure tierToAudacityLabel: .tier, .out$
   .name$ = selected$("TextGrid")
   .total_intervals = Get number of intervals: .tier

@@ -1,5 +1,3 @@
-# Find TextGrid label from either start or end
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -17,10 +15,40 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
-find_label.regex = 1
+if !variableExists("find_label.regex")
+  find_label.regex = 1
+endif
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     Tier where to perform the search
+#!   .target$: >
+#!     Target string to search for
+#!   .from: >
+#!     Index of starting mark in tier
+#!   .to: >
+#!     Index of final mark in tier
+#! out:
+#!   .return: >
+#!     Index of first matching label if found, 0 if not
+#!   .label$: >
+#!     Label of first matching mark if found, or the undefined string if not
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! internal: true
+#! ~~~
+#!
+#! Iterate through labels in a TextGrid tier and find the specified label.
+#! The query string is assumed to be a regular expression, but this behaviour
+#! can be changed by setting the `find_label.regex` flag to false.
+#!
+#! Depending on the values of `.from` and `.to`, the direction of the iteration
+#! can be manipulated.
+#!
 procedure _findLabel (.tier, .target$, .from, .to)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
@@ -64,6 +92,27 @@ procedure _findLabel (.tier, .target$, .from, .to)
   endfor
 endproc
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     Tier where to perform the search
+#!   .target$: >
+#!     Target string to search for
+#! out:
+#!   .return: >
+#!     Index of first matching label if found, 0 if not
+#!   .label$: >
+#!     Label of first matching mark if found, or the undefined string if not
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Iterate forward through labels in a TextGrid tier, from beginning to end,
+#! and find the specified label. The query string is assumed to be a regular
+#! expression, but this behaviour can be changed by setting the
+#! `find_label.regex` flag to false.
+#!
 procedure findLabel (.tier, .target$)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
@@ -73,6 +122,33 @@ procedure findLabel (.tier, .target$)
   .return = '_findLabel.return'
 endproc
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     Tier where to perform the search
+#!   .target$: >
+#!     Target string to search for
+#!   .from: >
+#!     Index of label to search for
+#! out:
+#!   .return: ＞
+#!     Index of first matching label if found, 0 if not
+#!   .label$: >
+#!     Label of first matching mark if found, or the undefined string if not
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Iterate forward through labels in a TextGrid tier, from beginning to end,
+#! and find the point or interval with the _nth_ matching label. The query
+#! string is assumed to be a regular expression, but this behaviour can be
+#! changed by setting the  `find_label.regex` flag to false.
+#!
+#! For example, with a tier with the intervals "a", "ba", "ac", "a", calling
+#! `@findNthLabel: tier, "^a$", 2` would find the 4th interval, because that's
+#! the `2`nd interval with a label matching `^a$`.
+#!
 procedure findNthLabel (.tier, .target$, .index)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
@@ -90,6 +166,31 @@ procedure findNthLabel (.tier, .target$, .index)
   endif
 endproc
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     Tier where to perform the search
+#!   .target$: >
+#!     Target string to search for
+#!   .from: >
+#!     Index of starting point or interval
+#! out:
+#!   .return: ＞
+#!     Index of first matching label if found, 0 if not
+#!   .label$: >
+#!     Label of first matching mark if found, or the undefined string if not
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Look for the first matching label in a TextGrid tier after the specified
+#! index.
+#!
+#! A negative `.from` value will be counted from the end, such that passing
+#! `-5` will start looking from the fifth-to-last point or interval. Passing
+#! `-1` will look only in the last interval or point.
+#!
 procedure findLabelAhead (.tier, .target$, .from)
   .interval = Is interval tier: .tier
   .type$ = if .interval then "interval" else "point" fi
@@ -103,6 +204,31 @@ procedure findLabelAhead (.tier, .target$, .from)
   .return = '_findLabel.return'
 endproc
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     Tier where to perform the search
+#!   .target$: >
+#!     Target string to search for
+#!   .from: >
+#!     Index of starting point or interval
+#! out:
+#!   .return: ＞
+#!     Index of first matching label if found, 0 if not
+#!   .label$: >
+#!     Label of first matching mark if found, or the undefined string if not
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Look for the first matching label in a TextGrid tier before the specified
+#! index.
+#!
+#! A negative `.from` value will be counted from the end, such that passing
+#! `-5` will start looking from the fifth-to-last point or interval. Passing
+#! `-1` will look only in the last interval or point.
+#!
 procedure findLabelBehind (.tier, .target$, .from)
   if variableExists("findLabelBehind.from_behind")
     appendInfoLine: "Use of ""from_behind"" is deprecated. Use negative indexes instead"

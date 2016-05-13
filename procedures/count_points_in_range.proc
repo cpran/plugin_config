@@ -1,5 +1,3 @@
-# Count points in TextGrid tier within specified range (procedure)
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -19,6 +17,23 @@
 #
 # Copyright 2014, 2015 Jose Joaquin Atria
 
+#! ~~~ params
+#! in:
+#!   .tier: >
+#!     The index of the tier to query
+#!   .start: >
+#!     The start of the range to process, in seconds
+#!   .end: >
+#!     The end of the range to process, in seconds
+#! out:
+#!   .return: >
+#!     The number of points in the specified range. If the tier is not a
+#!     point tier, this variable will be set to `undefined`.
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
 procedure countPointsInRange (.tier, .start, .end)
   .tg = selected()
   .is_interval = Is interval tier: .tier

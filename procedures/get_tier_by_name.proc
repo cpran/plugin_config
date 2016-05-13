@@ -1,5 +1,3 @@
-# Get TextGrid tier by name
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -17,8 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2015 Jose Joaquin Atria
+# Copyright 2015-2016 Jose Joaquin Atria
 
+#! ~~~ params
+#! in:
+#!   .target$: >
+#!     The target name to search for, as a literal string
+#! out:
+#!   .return: >
+#!     The index of the first matching tier
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Get TextGrid tier by name. The matching is done with a literal string
+#! comparison, such that the entire name must be the same.
+#!
 procedure getTierByName: .target$
   .n = Get number of tiers
   .return = 0

@@ -1,17 +1,3 @@
-# Detect non-overlapping intervals in a multi-tiered TextGrid (procedure)
-#
-# This procedure will generate a new TextGrid object with a single tier
-# containing intervals obtained by "flattening" those of all tiers in the
-# original TextGrid.
-#
-# Depending on the label of those intervals, it will be possible to determine
-# whether they were silent in the original (no label), whether they have an
-# overlap across tiers ("0" as the label), or whether they are a non-overlapping
-# interval, in which case the number of the tier to which they correspond will
-# be the label.
-#
-# Based on https://uk.groups.yahoo.com/neo/groups/praat-users/conversations/messages/6947
-#
 # This script is part of the tgutils CPrAN plugin for Praat.
 # The latest version is available through CPrAN or at
 # <http://cpran.net/plugins/tgutils>
@@ -29,8 +15,58 @@
 # You should have received a copy of the GNU General Public License
 # along with tgutils. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014, 2015 Jose Joaquin Atria
+# Copyright 2014-2016 Jose Joaquin Atria
 
+#! ~~~ params
+#! out:
+#!  .id: The ID of the new TextGrid
+#! selection:
+#!   in:
+#!     textgrid: 1
+#!   out:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Detect non-overlapping intervals in a multi-tiered TextGrid.
+#!
+#! Executed on a TextGrid object, this command generates a new TextGrid
+#! object with a single interval tier, generated as if all the interval
+#! tiers in the original object had been flattened into one. Two
+#! overlapping labeled intervals (in different tiers) of the original
+#! object will produce three intervals in the new object: one for the
+#! intersection, and one for the part of each original interval that
+#! did not overlap.
+#!
+#! The intervals in the new object will be labeled according to whether
+#! or not they correspond to the intersection of two or more labeled
+#! intervals in the original object: if they are not, their label will
+#! be the number of the original tier they were from; if they are, they
+#! will be labeled as `0`.
+#!
+#!     Original TextGrid
+#!     -----------------
+#!
+#!     |        |                   |                   |
+#!     |        |        A          |                   | Alice
+#!     |                    |                    |      |
+#!     |                    |          B         |      | Bob
+#!
+#!     New TextGrid
+#!     ------------
+#!
+#!     |        |           |       |            |      |
+#!     |        |     1     |   0   |     2      |      | overlaps
+#!
+#! This is particularly useful when the TextGrid stores the multiple turns
+#! in an interaction, with the utterances of each speaker in a different
+#! tier (a common enough setup). This command can help identify the
+#! fragments of the interaction in which each speaker is speaking on their
+#! own.
+#!
+#! Based on [a script][1] first posted to the mailing list.
+#!
+#! [1]: https://uk.groups.yahoo.com/neo/groups/praat-users/conversations/messages/6947
+#!
 procedure toNonOverlappingIntervals ()
   # Original TextGrid
   .tg = selected("TextGrid")
