@@ -35,8 +35,8 @@ include ../../plugin_tgutils/procedures/merge_contiguous_labels.proc
 #! This command creates a new TextGrid object. The original is unaffected.
 #!
 form Merge contiguous labels...
-  positive Tier 1 (0 = all)
-  comment  Only interval tiers are currently supported
+  integer Tier 1 (0 = all)
+  comment Only interval tiers are currently supported
 endform
 
 textgrid = Copy: selected$("TextGrid") + "_merged"
