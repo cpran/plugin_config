@@ -43,3 +43,30 @@ procedure getTierByName: .target$
     endif
   endfor
 endproc
+
+#! ~~~ params
+#! in:
+#!   .target$: >
+#!     The target name to search for, as regular expression pattern
+#! out:
+#!   .return: >
+#!     The index of the first matching tier
+#! selection:
+#!   in:
+#!     textgrid: 1
+#! ~~~
+#!
+#! Get TextGrid tier by name. The matching is done with a regular expression
+#! pattern, and the index of the first matching tier is returned.
+#!
+procedure getTierByName_regex: .pattern$
+  .n = Get number of tiers
+  .return = 0
+  for .i to .n
+    .name$ = Get tier name: .i
+    if index_regex(.name$, .target$)
+      .return = .i
+      .i += .n
+    endif
+  endfor
+endproc
