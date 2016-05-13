@@ -51,8 +51,12 @@ form Move boundaries to zero-crossings (batch)...
   boolean Ignore_points 1
 endform
 
-include ../../plugin_utils/procedures/require.proc
-include ../../plugin_utils/procedures/check_directory.proc
+if !fileReadable(preferencesDirectory$ + "/plugin_vieweach")
+  exitScript: "This script requires the vieweach plugin to run"
+endif
+
+strutils$ = preferencesDirectory$ + "/plugin_strutils/scripts/"
+tgutils$  = preferencesDirectory$ + "/plugin_tgutils/scripts/"
 
 # The current version of this script uses the new syntax, made available
 # with Praat v.5.3.44
@@ -61,53 +65,48 @@ include ../../plugin_utils/procedures/check_directory.proc
 @checkDirectory(sound_directory$, "Read Sounds from...")
 sound_directory$ = checkDirectory.name$
 
+# Make a list of Sounds to process
+runScript: strutils$ + "file_list_full_path.praat",
+  ... "sounds", sound_directory$, "*.wav", "no"
+sounds = selected("Strings")
+total_sounds = Get number of strings
+
 @checkDirectory(textGrid_directory$, "Read TextGrids from...")
 textgrid_directory$ = checkDirectory.name$
+
+# Make a list of Sounds to process
+runScript: strutils$ + "file_list_full_path.praat",
+  ... "textgrids", textgrid_directory$, "*.TextGrid", "no"
+textgrids = selected("Strings")
+total_textgrids = Get number of strings
 
 @checkDirectory(output_directory$, "Save TextGrids to...")
 output_directory$ = checkDirectory.name$
 
-verbose = 0
+script$ = tgutils$ + "move_to_zero_crossings.praat"
+call batch
+  ... runScript: "'script$'", 'tier', 'maximum_shift', 'ignore_points' \n
+  ... selectObject: selected("TextGrid")                               \n
+  ... name$ = selected$("TextGrid")                                    \n
+  ... out$ = "'output_directory$'" + name$ + "_zero.TextGrid"          \n
+  ... Save as text file: out$                                          \n
 
-cleared = 0
-if verbose
-  clearinfo
-  cleared = 1
-endif
+# Execute the script
+selectObject: sounds, textgrids
+runScript: preferencesDirectory$ + "/plugin_vieweach/scripts/" +
+  ... "for_each.praat", batch.script$, "Use sets"
 
-sounds = Create Strings as file list: "files",
-  ... sound_directory$ + "*wav"
-total_sounds = Get number of strings
-
-textgrids = Create Strings as file list: "files",
-  ... textgrid_directory$ + "*TextGrid"
-total_textgrids = Get number of strings
-
-# Perform initial checks on available objects
-if !total_sounds or total_sounds and (total_sounds != total_textgrids)
-  exitScript: "Not able to read an equal number of Sound and TextGrid objects."
-endif
-
-for current to total_sounds
-
-  selectObject: sounds
-  sound_file$ = Get string: current
-  sound = Read from file: sound_directory$ + sound_file$
-
-  selectObject: textgrids
-  textgrid_file$ = Get string: current
-  textgrid = Read from file: textgrid_directory$ + textgrid_file$
-
-  selectObject: sound, textgrid
-  runScript: "../textgrid/move_to_zero_crossings.praat",
-    ... tier, maximum_shift, ignore_points
-
-  selectObject: textgrid
-  name$ = selected$("TextGrid")
-  Save as text file: output_directory$ + name$ + "_zero" + "TextGrid"
-
-  removeObject: sound, textgrid
-
-endfor
-
+# Clean up
+deleteFile: batch.script$
 removeObject: sounds, textgrids
+
+procedure batch: .src$
+  # Generate a temporary script with the needed parameters
+  @mktempfile: "batch_zero_crossings.XXXXXX", ".praat"
+  .script$ = mktempfile.name$
+
+  # For convenience, replace instances of \n with a newline
+  .src$ = replace_regex$(.src$, "\s+\\n\s?", newline$, 0)
+
+  writeFileLine: .script$, .src$
+endproc
