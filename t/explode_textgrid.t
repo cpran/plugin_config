@@ -1,4 +1,4 @@
-include ../../plugin_testsimple/procedures/test_simple.proc
+include ../../plugin_tap/procedures/simple.proc
 include ../procedures/find_label.proc
 
 @no_plan()
