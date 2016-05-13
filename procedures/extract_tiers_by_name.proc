@@ -1,0 +1,78 @@
+# This script is part of the tgutils CPrAN plugin for Praat.
+# The latest version is available through CPrAN or at
+# <http://cpran.net/plugins/tgutils>
+#
+# The tgutils plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, either
+# version 3 of the License, or (at your option) any later version.
+#
+# The tgutils plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+# of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with tgutils. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2015-2016 Jose Joaquin Atria
+
+#! ~~~ params
+#! in:
+#!   .pattern$: >
+#!     A regular expression pattern to find matching tiers
+#!   .modify: >
+#!     If true, the extracted tiers are removed from the original. Otherwise
+#!     the original is left untouched.
+#! out:
+#!   .return: >
+#!     The ID of the new TextGrid object, or 0 if no matching tiers were found
+#! selection:
+#!   in:
+#!     textgrid: 1
+#!   out:
+#!     textgrid: 0-1
+#! ~~~
+#!
+#! This procedure extracts the matching tiers from the original TextGrid into
+#! a new TextGrid object. The tiers in the new TextGrid object will be copies
+#! of the original ones, unless `.modify` is set to true, in which case the
+#! corresponding tiers in the original will be removed.
+#!
+#! The new TextGrid will be selected at the end of the operation, and its ID
+#! will be stored in `.return`. If no matching tiers were found, this
+#! variable will be set to `0`, and no object will be selected.
+#!
+procedure extractTiersByName: .pattern$, .modify
+  .textgrid  = selected("TextGrid")
+  .textgrid$ = selected$("TextGrid")
+  .tiers = Get number of tiers
+  .n = 0
+  for .i to .tiers
+    .name$ = Get tier name: .i
+    if index_regex(.name$, .pattern$)
+      .n += 1
+      .id[.n] = Extract one tier: .i
+      selectObject: .textgrid
+      if .modify
+        Remove tier: .i
+        .i -= 1
+        .tiers -= 1
+      endif
+    endif
+  endfor
+
+  .return = .n
+  nocheck selectObject: undefined
+
+  if .n
+    for .i to .n
+      plusObject: .id[.i]
+    endfor
+    .return = Merge
+    Rename: .textgrid$ + "_" + .pattern$
+    for .i to .n
+      removeObject: .id[.i]
+    endfor
+  endif
+endproc
