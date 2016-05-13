@@ -6,8 +6,11 @@
   - Changes: >
     * Find label now returns label
     * Exposed interval overlap script through menu
+    * Tests now use tap plugin
+    * Deprecated label finder scripts for new, more sensible names
   - Fixes: >
     * Improved inline documentation throughout
+    * Labels of non-existent intervals are undefined
 - v0.0.10:
   - More robust tests support changes in 6.0.10
   - findNthLabel returns undefined with an index of 0
