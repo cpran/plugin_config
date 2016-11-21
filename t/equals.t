@@ -1,6 +1,5 @@
 include ../procedures/config.proc
 include ../../plugin_testsimple/procedures/test_simple.proc
-include ../../plugin_utils/procedures/try.proc
 
 @no_plan()
 

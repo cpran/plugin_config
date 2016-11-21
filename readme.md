@@ -9,4 +9,4 @@ Read data from a configuration file.
 Requirements
 ------------
 
-* `utils`
+* None
