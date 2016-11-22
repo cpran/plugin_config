@@ -1,7 +1,7 @@
 include ../procedures/config.proc
 include ../../plugin_tap/procedures/more.proc
 
-@plan(22)
+@plan: 23
 
 nocheck selectObject: undefined
 config.use_table = 1
@@ -64,6 +64,12 @@ if praatVersion >= 6016
 
   @is$: config.return$["repeated"], "1",
     ... "hashes cascade"
+
+  @is$: config.return$["string"], "hello",
+    ... "unquoted string"
+
+  @is$: config.return$["quoted"], "hello",
+    ... "quoted string"
 
   @is_false: variableExists("config.return[comment]"),
     ... "comments are ignored"

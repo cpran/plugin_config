@@ -119,6 +119,7 @@ procedure config: .filename$
       .val$ = right$(.line$, length(.line$) - (.sep + length(.separator$)))
       .val$ = replace_regex$(.val$, "^\s*", "", 1)
       .val$ = replace_regex$(.val$, "\s*$", "", 1)
+      .val$ = replace_regex$(.val$, "(?<!\\)""", "", 0)
 
       .val = number(.val$)
 
