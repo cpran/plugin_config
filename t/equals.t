@@ -1,5 +1,5 @@
 include ../procedures/config.proc
-include ../../plugin_testsimple/procedures/test_simple.proc
+include ../../plugin_tap/procedures/more.proc
 
 @no_plan()
 
@@ -10,30 +10,30 @@ config.separator$ = "=="
 @config: "equals.conf"
 table = selected()
 
-@ok: variableExists("config.length"),
+@is_true: variableExists("config.length"),
   ... "length exists"
 
-@ok: config.length == 2,
+@is: config.length, 2,
   ... "count entries"
 
-@ok: variableExists("config.keys$[1]"),
+@is_true: variableExists("config.keys$[1]"),
   ... "first key exists"
 
-@ok: variableExists("config.keys$[" + string$(config.length) + "]"),
+@is_true: variableExists("config.keys$[" + string$(config.length) + "]"),
   ... "last key exists"
 
-@ok: numberOfSelected("Table") == 1,
+@is: numberOfSelected("Table"), 1,
   ... "created table"
 
-@ok: config.keys$[1] == "hello: world",
+@is$: config.keys$[1], "hello: world",
   ... "changed separator string"
 
 .value = Object_'table'[1, "repeated"]
-@ok: .value = 350,
+@is: .value, 350,
   ... "good numeric value"
 
 .value$ = Object_'table'$[1, "repeated"]
-@ok: .value$ = "350",
+@is$: .value$, "350",
   ... "good string value"
 
 removeObject: table
