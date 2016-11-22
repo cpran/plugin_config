@@ -1,3 +1,8 @@
 - next: # unreleased
+- v0.0.2:
+  - Changes:
+    - Tests use tap plugin instead of testsimple
+    - Quoted and unquoted strings are read from cofig. Literal quotes
+      need to be escaped with a preceding backslash
 - v0.0.1:
   - Initial release
