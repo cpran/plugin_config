@@ -1,7 +1,7 @@
 ---
 Plugin: config
 Homepage: http://cpran.net/plugins/config
-Version: 0.0.1
+Version: 0.0.2
 Maintainer: José Joaquín Atria <jjatria@gmail.com>
 Depends:
   praat: 5.4.00+
