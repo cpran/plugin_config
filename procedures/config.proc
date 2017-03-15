@@ -85,14 +85,33 @@ endif
 #! key of a different entry. Because this approach means there will be a
 #! single hash, boolean strings are not supported when using Tables.
 #!
+#! Values in the config file can be separated into sections by specifying the
+#! name of the current section between square brackets in a line of its own
+#! optionally preceded by whitespace. All values following a section heading
+#! will belong to that section until a new section is declared. The top-level
+#! section, active when no other section declaration has been found, is called
+#! "default".
+#!
+#! When using Table objects, each of these sections will result in a different
+#! Table object, named like the corresponding section with the "config_" prefix.
+#!
+#! When using internal hashes, all values will be stored in the `.return$[]`
+#! hash. Keys in sections other than "default" will be saved with their section
+#! names, separated by the specified separator (so that with the default
+#! separator, the key "foo" in the section "bar" would be stored under the
+#! composite key "bar:foo"). Keys in the default section are stored with their
+#! plain keys for simplicity and backwards compatibility.
+#!
 procedure config: .filename$
+  .section$ = "default"
   .n = numberOfSelected()
   for .i to .n
     .id[.i] = selected(.i)
   endfor
 
   if .use_table
-    .table = Create Table with column names: "config_hash", 1, .separator$
+    .sections = Create Table with column names: "section_hash", 0, "name id"
+    @_config_switch_section: .section$
   else
     .table = 0
   endif
@@ -104,56 +123,106 @@ procedure config: .filename$
   for .i to .lines
     selectObject: .config
 
-    .line$ = Get string: .i
+    .line$ = Object_'.config'$[.i]
 
     .sep = index(.line$, .separator$)
-    if !.sep or index_regex(.line$, "^\s*#")
+    if index_regex(.line$, "^\s*#")
       Remove string: .i
       .lines -= 1
       .i -= 1
+    elsif index_regex(.line$, "^\s*\[")
+      .tempsec$ = replace_regex$(.line$, "^\s*\[([\w\d ]+)\].*?", "\1", 0)
+      if .tempsec$ != .line$ and .tempsec$ != ""
+        @_config_switch_section: .tempsec$
+      endif
     else
       .key$ = left$(.line$, .sep - 1)
       .key$ = replace_regex$(.key$, "^\s*", "", 1)
       .key$ = replace_regex$(.key$, "\s*$", "", 1)
 
-      .val$ = right$(.line$, length(.line$) - (.sep + length(.separator$)))
-      .val$ = replace_regex$(.val$, "^\s*", "", 1)
-      .val$ = replace_regex$(.val$, "\s*$", "", 1)
-      .val$ = replace_regex$(.val$, "(?<!\\)""", "", 0)
+      if .key$ != ""
+        .val$ = right$(.line$, length(.line$) - (.sep + length(.separator$)))
+        .val$ = replace_regex$(.val$, "^\s*", "", 1)
+        .val$ = replace_regex$(.val$, "\s*$", "", 1)
+        .val$ = replace_regex$(.val$, "(?<!\\)""", "", 0)
 
-      .val = number(.val$)
+        .val = number(.val$)
 
-      .val = if index_regex(.val$, "(true|yes)") then 1 else .val fi
-      .val = if index_regex(.val$, "(false|no)") then 0 else .val fi
+        .val = if index_regex(.val$, "(true|yes)") then 1 else .val fi
+        .val = if index_regex(.val$, "(false|no)") then 0 else .val fi
 
-      if .use_table
-        selectObject: .table
-        if !do("Get column index...", .key$)   ; key is not known
-          Append column: .key$
-          .length += 1
+        if .use_table
+          selectObject: .table
+          if !do("Get column index...", .key$)   ; key is not known
+            Append column: .key$
+            .length += 1
+          endif
+          Set string value: 1, .key$, .val$
+        else
+          .key$ = if .section$ == "default" then
+            ... "" else .section$ + .separator$ fi + .key$
+
+          if !variableExists(".return$[""" + .key$ + """]")   ; key is not known
+            .length += 1
+          endif
+
+          .return$[.key$] = .val$
+          .return[ .key$] = .val
         endif
-        Set string value: 1, .key$, .val$
-      else
-        if !variableExists(".return$[""" + .key$ + """]")   ; key is not known
-          .length += 1
-        endif
-        .return$[.key$] = .val$
-        .return[ .key$] = .val
+
+        .keys$[.length] = .key$
       endif
-
-      .keys$[.length] = .key$
     endif
   endfor
 
   removeObject: .config
 
   if .use_table
-    selectObject: .table
-    Remove column: .separator$
+    for .i to Object_'.sections'.nrow
+      selectObject: Object_'.sections'[.i, "id"]
+      Remove column: .separator$
+    endfor
+    selectObject()
+    for .i to Object_'.sections'.nrow
+      plusObject: Object_'.sections'[.i, "id"]
+    endfor
+    removeObject: .sections
   else
-    nocheck selectObject: undefined
+    selectObject()
     for .i to .n
       plusObject: .id[.i]
     endfor
   endif
+endproc
+
+procedure _config_new_section: .name$
+  if config.use_table
+    selectObject: config.sections
+    .row = Search column: "name", .name$
+    if !.row
+      .id = Create Table with column names: "config_" + .name$,
+        ... 1, config.separator$
+
+      selectObject: config.sections
+      Append row
+      Set string value:  Object_'config.sections'.nrow, "name", .name$
+      Set numeric value: Object_'config.sections'.nrow, "id",   .id
+    endif
+    selectObject: .id
+  endif
+endproc
+
+procedure _config_switch_section: .name$
+  if config.use_table
+    selectObject: config.sections
+    .row = Search column: "name", .name$
+    if .row
+      config.table = Object_'config.sections'[.row, "id"]
+    else
+      @_config_new_section: .name$
+      config.table = selected("Table")
+    endif
+    selectObject: config.table
+  endif
+  config.section$ = .name$
 endproc
