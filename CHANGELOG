@@ -1,4 +1,7 @@
 - next: # unreleased
+- v0.0.3:
+  - New:
+    - Add support for config sections
 - v0.0.2:
   - Changes:
     - Tests use tap plugin instead of testsimple
