@@ -172,14 +172,21 @@ endproc
 #! ~~~
 #!
 procedure tgutils._moveBoundary: .tier, .item, .zero
+  .end  = Get end time of interval:  .tier, .item
+  .next = Get high interval at time: .tier, .end
+
   .label$[1] = Get label of interval: .tier, .item
-  .label$[2] = Get label of interval: .tier, .item+1
+  if .next
+    .label$[2] = Get label of interval: .tier, .next
+  endif
 
   Remove right boundary: .tier, .item
   nocheck Insert boundary: .tier, .zero
 
-  Set interval text: .tier, .item,   .label$[1]
-  Set interval text: .tier, .item+1, .label$[2]
+  Set interval text: .tier, .item, .label$[1]
+  if .next
+    Set interval text: .tier, .next, .label$[2]
+  endif
 endproc
 
 #! ~~~ params
