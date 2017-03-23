@@ -22,37 +22,37 @@ for i to segments-1
 endfor
 
 @getTierByName: "clause"
-@ok: getTierByName.return == 2,
+@is: getTierByName.return, 2,
   ... "finds existing interval tier"
 
 @getTierByName: "points"
-@ok: getTierByName.return == 5,
+@is: getTierByName.return, 5,
   ... "finds existing point tier"
 
 @getTierByName: "fake"
-@ok: !getTierByName.return,
+@is_false: getTierByName.return,
   ... "does not find missing tier"
 
 @getTierByName: ""
-@ok: !getTierByName.return,
+@is_false: getTierByName.return,
   ... "does not find tier with empty string"
 
 Set tier name: 5, "añejó"
 
 @getTierByName: "añejó"
-@ok: getTierByName.return == 5,
+@is: getTierByName.return, 5,
   ... "finds tier with unicode string"
 
 Set tier name: 5, "あいうえお"
 
 @getTierByName: "あいうえお"
-@ok: getTierByName.return == 5,
+@is: getTierByName.return, 5,
   ... "finds tier with hiragana string"
 
 Set tier name: 5, "音声学"
 
 @getTierByName: "音声学"
-@ok: getTierByName.return == 5,
+@is: getTierByName.return, 5,
   ... "finds tier with kanji string"
 
 Set tier name: 5, "points"

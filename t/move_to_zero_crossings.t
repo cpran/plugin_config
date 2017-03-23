@@ -1,4 +1,4 @@
-include ../../plugin_tap/procedures/simple.proc
+include ../../plugin_tap/procedures/more.proc
 include ../procedures/move_to_zero_crossings.proc
 
 @plan: 5
@@ -21,21 +21,21 @@ endfor
 
 selectObject: sound, textgrid
 @check_crossings: 3
-@ok: !check_crossings.return,
+@is_false: check_crossings.return,
   ... "not all boundaries at zero"
 
 @moveToZeroCrossings: 3, 0
 @check_crossings: 3
-@ok: check_crossings.return,
+@is_true: check_crossings.return,
   ... "all boundaries at zero"
 
 @check_crossings: 4
-@ok: !check_crossings.return,
+@is_false: check_crossings.return,
   ... "not all points at zero"
 
 @moveToZeroCrossings: 4, 0
 @check_crossings: 4
-@ok: check_crossings.return,
+@is_true: check_crossings.return,
   ... "all points at zero"
 
 removeObject: sound, textgrid, synth
@@ -67,6 +67,7 @@ procedure check_crossings: .tier
 
     selectObject: .sound
     .zero = Get nearest zero crossing: 1, .time
+    @diag: "  " + string$(.time) + " ~ " + string$(.zero)
     if .zero != .time
       .return = 0
     endif
