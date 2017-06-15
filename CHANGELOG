@@ -1,4 +1,7 @@
 - next: # unreleased
+- v0.0.4:
+  - New:
+    - Add a variable to store the number of read sections
 - v0.0.3:
   - New:
     - Add support for config sections
