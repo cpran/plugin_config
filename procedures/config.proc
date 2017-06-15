@@ -53,6 +53,8 @@ endif
 #!     The ID of a Table representation of the config hash, as a fallback
 #!     for Praat versions before 6.0.16, or for use when requested by the
 #!     user with `.use_table`. When not created, it has the value 0.
+#!   .total_sections: >
+#!     The total number of sections read from the config file
 #! selection:
 #!   out: >
 #!     When `.use_table` is true, a single Table object. Otherwise it
@@ -196,6 +198,9 @@ procedure config: .filename$
 endproc
 
 procedure _config_new_section: .name$
+  if !variableExists("config.total_sections")
+    config.total_sections = 0
+  endif
   if config.use_table
     selectObject: config.sections
     .row = Search column: "name", .name$
@@ -207,6 +212,9 @@ procedure _config_new_section: .name$
       Append row
       Set string value:  Object_'config.sections'.nrow, "name", .name$
       Set numeric value: Object_'config.sections'.nrow, "id",   .id
+
+      config.total_sections += 1
+      config.sections[config.total_sections] = selected()
     endif
     selectObject: .id
   endif

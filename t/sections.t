@@ -1,12 +1,14 @@
 include ../procedures/config.proc
 include ../../plugin_tap/procedures/more.proc
 
-@plan: 11
+@plan: 12
 
 nocheck selectObject: undefined
 config.use_table = 1
 
 @config: "sections.conf"
+
+@is: config.total_sections, 3, "read multiple sections"
 
 @is: numberOfSelected("Table"), 3,
   ... "sections in separate Table objects"

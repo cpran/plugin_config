@@ -1,7 +1,7 @@
 include ../procedures/config.proc
 include ../../plugin_tap/procedures/more.proc
 
-@plan: 23
+@plan: 24
 
 nocheck selectObject: undefined
 config.use_table = 1
@@ -11,6 +11,9 @@ table = selected()
 
 @is_true: variableExists("config.length"),
   ... "length exists"
+
+@is: config.total_sections, 1,
+  ... "read a single section"
 
 @is: config.length, 8,
   ... "did not count comments"
