@@ -91,17 +91,10 @@ if praatVersion >= 6016
 
 else
   @skip: undefined, "hashes not supported below 6.0.16"
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
-  @fail: ""
+  n = plan.test + 1
+  for i to plan.total_tests - n
+    @fail: ""
+  endfor
   @end_skip()
 endif
 
