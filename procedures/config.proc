@@ -127,7 +127,6 @@ procedure config: .filename$
 
     .line$ = Object_'.config'$[.i]
 
-    .sep = index(.line$, .separator$)
     if index_regex(.line$, "^\s*#")
       Remove string: .i
       .lines -= 1
@@ -138,20 +137,10 @@ procedure config: .filename$
         @_config_switch_section: .tempsec$
       endif
     else
-      .key$ = left$(.line$, .sep - 1)
-      .key$ = replace_regex$(.key$, "^\s*", "", 1)
-      .key$ = replace_regex$(.key$, "\s*$", "", 1)
+      @_config_parse_key: .line$, .separator$
 
       if .key$ != ""
-        .val$ = right$(.line$, length(.line$) - (.sep + length(.separator$)))
-        .val$ = replace_regex$(.val$, "^\s*", "", 1)
-        .val$ = replace_regex$(.val$, "\s*$", "", 1)
-        .val$ = replace_regex$(.val$, "(?<!\\)""", "", 0)
-
-        .val = number(.val$)
-
-        .val = if index_regex(.val$, "(true|yes)") then 1 else .val fi
-        .val = if index_regex(.val$, "(false|no)") then 0 else .val fi
+        @_config_parse_value: .line$, .separator$
 
         if .use_table
           selectObject: .table
@@ -159,7 +148,7 @@ procedure config: .filename$
             Append column: .key$
             .length += 1
           endif
-          Set string value: 1, .key$, .val$
+          Set string value: 1, .key$, .value$
         else
           .key$ = if .section$ == "default" then
             ... "" else .section$ + .separator$ fi + .key$
@@ -168,8 +157,8 @@ procedure config: .filename$
             .length += 1
           endif
 
-          .return$[.key$] = .val$
-          .return[ .key$] = .val
+          .return$[.key$] = .value$
+          .return[ .key$] = .value
         endif
 
         .keys$[.length] = .key$
@@ -233,4 +222,29 @@ procedure _config_switch_section: .name$
     selectObject: config.table
   endif
   config.section$ = .name$
+endproc
+
+procedure _config_parse_key: .line$, .sep$
+  .sep = index(.line$, .sep$)
+  .key$ = left$(.line$, .sep - 1)
+  .key$ = replace_regex$(.key$, "^\s*", "", 1)
+  .key$ = replace_regex$(.key$, "\s*$", "", 1)
+
+  config.key$ = .key$
+endproc
+
+procedure _config_parse_value: .line$, .sep$
+  .sep = index(.line$, .sep$)
+  .value$ = right$(.line$, length(.line$) - (.sep + length(.sep$)))
+  .value$ = replace_regex$(.value$, "^\s*", "", 1)
+  .value$ = replace_regex$(.value$, "\s*$", "", 1)
+  .value$ = replace_regex$(.value$, "(?<!\\)""", "", 0)
+
+  .value = number(.value$)
+
+  .value = if index_regex(.value$, "(true|yes)") then 1 else .value fi
+  .value = if index_regex(.value$, "(false|no)") then 0 else .value fi
+
+  config.value$ = .value$
+  config.value  = .value
 endproc
