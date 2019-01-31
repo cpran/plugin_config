@@ -132,7 +132,7 @@ procedure config: .filename$
       .lines -= 1
       .i -= 1
     elsif index_regex(.line$, "^\s*\[")
-      .tempsec$ = replace_regex$(.line$, "^\s*\[([\w\d ]+)\].*?", "\1", 0)
+      .tempsec$ = replace_regex$(.line$, "^\s*\[((\w|\d| )+)\].*?", "\1", 0)
       if .tempsec$ != .line$ and .tempsec$ != ""
         @_config_switch_section: .tempsec$
       endif
